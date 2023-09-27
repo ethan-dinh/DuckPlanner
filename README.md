@@ -7,3 +7,5 @@ The goal of this project is to develop a scheduler for UO academic classes. Curr
 1. Create a web scraper for the UO class schedule. This is present on duckweb. Format the data into a CSV that can be imported into mySQL. 
 2. Create a python backend for the scheduling.
 3. Create the frontend that will communicate with mySQL and the Python backend. Figure out how to have the frontend communicate with the backend. 
+4. Implement a method to convert the selected schedule to matrix format.
+5. We also need to display all the possible formats in a table.
