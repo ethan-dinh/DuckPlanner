@@ -1,7 +1,7 @@
 # UO Scheduler
 
 ## Goals/Purpose
-The goal of this project is to develop a scheduler for UO academic classes. Currently, schedule builder does not allow for users to filter the type of schedules that are produced. Instead, students have to rely on brute force comparisons between two schedules at a time. Furthermore, schedule builder does not show when finals are assigned for the student's selected classes.
+The aim of this project is to create a scheduler tailored for UO academic courses. At present, the schedule builder lacks the feature for users to filter the generated schedules. As a result, students must engage in tedious one-on-one comparisons between schedules. Additionally, the current system does not display the assigned finals for the courses students have chosen.
 
 ## Methods
 1. Create a web scraper for the UO class schedule. This is present on duckweb. Format the data into a CSV that can be imported into mySQL.
