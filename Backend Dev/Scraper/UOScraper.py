@@ -14,11 +14,16 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 
-# Importing CourseClasses.py
-from UOCourseClasses import Course
-
 # Configuring Selenium
 chromedriver = "./chromedriver"
+
+class Course:
+    """ Class to represent a course """
+    def __init__(self, name: str, description: str, credits: float):
+        self.name = name
+        self.description = description
+        self.credits = credits
+        self.sections = []
 
 def initWebpage(driver: webdriver.Chrome):
     """ Function to initialize the webpage """
