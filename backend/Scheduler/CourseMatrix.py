@@ -18,7 +18,7 @@ rem_space = terminal_width - (COL_WIDTH * len(DAYS) + 11)
 def init_matrix(start, end):
     global HOURS
 
-    HOURS = [f"{hour:02}:{minute:02}" for hour in range(start, end) for minute in range(0, 60, 10)]
+    HOURS = [f"{hour:02}:{minute:02}" for hour in range(start, end) for minute in range(0, 60, 10)] + [f"{end:02}:00"]
     
     return [[" " * COL_WIDTH for _ in range(len(DAYS))] for _ in range(len(HOURS))]
 
@@ -68,3 +68,4 @@ def print_matrix(matrix):
         for j in range(len(DAYS)):
             print(matrix[i][j], end=" ")
         print()
+    print("=" * (terminal_width))

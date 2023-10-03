@@ -72,7 +72,7 @@ def translateTime(time: str):
     return [[f"{start[:2]}:{start[2:]}", str(duration)], int(start[:2]), int(end[:2])]
 
 def time_to_minutes(time):
-    """Convert time in HH:MM format to minutes since midnight."""
+    """ Convert time in HH:MM format to minutes since midnight. """
     hours, minutes = map(int, time.split(":"))
     return hours * 60 + minutes
 
