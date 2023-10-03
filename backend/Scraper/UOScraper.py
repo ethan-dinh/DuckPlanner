@@ -63,7 +63,7 @@ def saveData(courses: list):
 def main():
     option = webdriver.ChromeOptions()
     option.add_experimental_option("excludeSwitches", ['enable-automation'])
-    option.headless = False
+    option.headless = True
     s = Service(chromedriver)
     driver = webdriver.Chrome(service=s, options=option)
 
