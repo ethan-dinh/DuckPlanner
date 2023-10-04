@@ -3,7 +3,7 @@
 ## Goals/Purpose
 The aim of this project is to create a scheduler tailored for UO academic courses. At present, the schedule builder lacks the feature for users to filter the generated schedules. As a result, students must engage in tedious one-on-one comparisons between schedules. Additionally, the current system does not display the assigned finals for the courses students have chosen.
 
-## Methods
+## Project Checkpoints
 1. Create a web scraper for the UO class schedule. This is present on duckweb. Format the data into a CSV that can be imported into mySQL.
 2. Create a python backend for the scheduling.
 3. Create the frontend that will communicate with mySQL and the Python backend. Figure out how to have the frontend communicate with the backend.
