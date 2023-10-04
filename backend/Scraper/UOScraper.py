@@ -33,12 +33,14 @@ def initWebpage(driver: webdriver.Chrome):
     
     # Find the course level selector
     course_level_selector = driver.find_element(By.ID, "levl_id")
+    subject_selector = driver.find_element(By.ID, "subj_id")
     location_selector = driver.find_element(By.ID, "camp_id")
     submit_button = driver.find_element(By.NAME, "submit_btn")
 
     # Select the search criteria
     level_select = Select(course_level_selector)
     location_select = Select(location_selector)
+    subject_select = Select(subject_selector)
 
     location_select.select_by_value("I")
     level_select.select_by_value("UG")
@@ -88,6 +90,11 @@ def main():
                 courses.append(Course(row_data[0].split("  ")[1].strip(), row_data[0].split("  ")[2], row_data[1].split(" ")[0]))
             elif len(row_data) == 9 and row_data[-1] != "Notes":
                 courses[-1].sections.append(row_data)
+            elif "-" in row_data[0]: # Account for multiple subsections 
+                crn = courses[-1].sections[-1][1]
+                available_seats = courses[-1].sections[-1][2]
+                total_seats = courses[-1].sections[-1][3]
+                courses[-1].sections.append(["DIS", crn, available_seats, total_seats] + row_data)
 
         # Click the next button
         if iters != total_iterations - 1: driver.find_element(By.LINK_TEXT, "Next").click()
