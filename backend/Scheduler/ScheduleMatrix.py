@@ -39,7 +39,7 @@ class ScheduleMatrix:
         self.matrix = [[" " * COL_WIDTH for _ in range(len(DAYS))] for _ in range(len(self.hours))]
 
 
-    def add_class(self, day, start_hour, duration, class_name):
+    def add_class(self, day, start_hour, duration, class_name, class_type):
         """
         Function to add a class to the matrix
 
@@ -59,6 +59,8 @@ class ScheduleMatrix:
                 self.matrix[start_hour_index + i][day_index] = "*" + "-" * (COL_WIDTH-2) + "*"
             elif i == dur_index // 2:
                 self.matrix[start_hour_index + i][day_index] = "|" + class_name.center(COL_WIDTH-2) + "|"
+            elif i == (dur_index //2) + 1:
+                self.matrix[start_hour_index + i][day_index] = "|" + class_type[:3].center(COL_WIDTH-2) + "|"
             else:
                 self.matrix[start_hour_index + i][day_index] = "|" + " " * (COL_WIDTH-2) + "|"
 

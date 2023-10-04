@@ -8,11 +8,14 @@ Date: 9/28/2023
 import csv
 from ScheduleMatrix import ScheduleMatrix as SM
 from typing import Dict, List
+import shutil
 
 # --------------------------------- #
 #          Global Variables         #
 # --------------------------------- #
 date_dict = {"m": "MONDAY", "t": "TUESDAY", "w": "WEDNESDAY", "r": "THURSDAY", "f": "FRIDAY"}
+terminal_width = shutil.get_terminal_size().columns
+COL_WIDTH = (terminal_width - 11) // 5
 
 # --------------------------------- #
 #            Classes                #
@@ -25,13 +28,8 @@ class Course:
         self.credits = credits
         self.sections = []
 
-class Schedule:
-    """ Class to represent a schedule """
-    def __init__(self):
-        self.schedule = []
-
 # --------------------------------- #
-#          Matrix Display           #
+#        Translation Layer          #
 # --------------------------------- #
 
 def readData(filepath: str) -> List:
@@ -112,7 +110,7 @@ def translateSection(courses: List[dict]) -> List[List[str]]:
             latest_time = curr_end
 
         for day in days:
-            matrix_classes.append([date_dict[day], time_data[0], time_data[1], course['name']])
+            matrix_classes.append([date_dict[day], time_data[0], time_data[1], course['name'], course['class type']])
 
     return matrix_classes, earliest_time, latest_time + 1
 
@@ -184,8 +182,8 @@ def find_base_lecture_schedule(classes, index=0, current_schedule=[]):
 
 def find_full_schedule(base_schedule, classes):
     full_schedules = [base_schedule]
-    
     for index, _ in enumerate(base_schedule):
+        # Isolate all of the lab sections
         labs = [s for s in classes[index] if s['class type'] == 'lab']
         if labs == []:
             continue
@@ -214,26 +212,28 @@ def main():
     print("\033c", end="")
     print("Possible Schedules:")
 
-    base_schedules = find_base_lecture_schedule(user_course_list)
+    # Find all of the base schedules
     all_schedules = []
-
+    base_schedules = find_base_lecture_schedule(user_course_list)
     for base_schedule in base_schedules:
         all_schedules.extend(find_full_schedule(base_schedule, user_course_list))
  
+    # Find all of the sections that fit into the base schedule
     all_matrix_schedules = []
     for schedule in all_schedules:
         matrix_classes, early_start, late_end = translateSection(schedule)
         matrix = SM(early_start, late_end)
         for course in matrix_classes:
-            matrix.add_class(course[0], course[1], int(course[2]), course[3])
+            matrix.add_class(course[0], course[1], int(course[2]), course[3], course[4])
         all_matrix_schedules.append(matrix)   
 
+    # Iterate through the list of potential schedules and print them out
     index = 0
     while True:
         all_matrix_schedules[index].print_matrix()
-        print(f"Schedule {index + 1} of {len(all_matrix_schedules)}")
-        user_input = input("Click Enter to cycle through schedules.\nEnter \"exit\" to exit: ")
-        print(user_input)
+        print(f"Schedule {index + 1} of {len(all_matrix_schedules)}".center(terminal_width))
+        print("=" * (terminal_width))
+        user_input = input("Press Enter to cycle through schedules.\nEnter \"exit\" to exit: ")
         if user_input == "exit":
             break
         elif user_input == "":
