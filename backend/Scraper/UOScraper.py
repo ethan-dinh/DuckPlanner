@@ -49,20 +49,34 @@ def initWebpage(driver: webdriver.Chrome):
 def saveData(courses: list):
     """ Function to save the data to a csv file """
 
-    data = [["Course Name", "Course Description", "Credits"]]
+    data = [["Course Name", "Course Description", "Credits", "Section Type", "CRN", "Available Seats", "Total Seats", "Days", "Time", "Location", "Instructor", "Requirements"]]
     for i in range(len(courses)):
-        data.append([courses[i].name, courses[i].description, courses[i].credits])
         for section in courses[i].sections:
-            if section[0] == "":
+            # Check for empty section type
+            if section[0][0] not in ['+', "L"]:
                 section[0] = "Lecture"
-            data.append(section)
 
+            # Check if section contains empty strings
+            if ' ' in section or '' in section:
+                section = ["N/A" if ((x ==  ' ') or (x == '')) else x for x in section]
+
+            # Check if section is less than 9 elements
+            if len(section) < 9:
+                section += ["N/A"] * (9 - len(section))
+
+            # Replace all \n and , with spaces
+            section = [x.replace("\n", " ") for x in section]
+            
+            row = [courses[i].name, courses[i].description.strip().replace(",", " "), courses[i].credits] + section
+            data.append(row)
+
+    # Make sure the data is tab-separated
     with open("CourseData.csv", "w") as f:
         writer = csv.writer(f)
         writer.writerows(data)
 
 # -------------------------------- Main Function --------------------------------
-def main():
+def scrapeData():
     option = webdriver.ChromeOptions()
     option.add_experimental_option("excludeSwitches", ['enable-automation'])
     option.headless = True
@@ -106,4 +120,4 @@ def main():
     saveData(courses)
 
 if __name__ == "__main__":
-    main()
+    scrapeData()

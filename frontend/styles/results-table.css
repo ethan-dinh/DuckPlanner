@@ -1,0 +1,79 @@
+#search-results {
+    height: 300px; 
+    background-color: #f0f0f0; /* Background color */
+    padding-left: 15px; /* Padding */
+    padding-right: 15px; /* Padding */
+    border: 1px solid #ccc; /* Border */
+    border-radius: 5px; /* Rounded corners */
+    margin-bottom: 10px;
+    overflow-y: auto;
+}
+
+/* Style the results list */
+#dynamicHeightContainer {
+    background-color: #f0f0f0; /* Background color */
+    padding-left: 15px; /* Padding */
+    padding-right: 15px; /* Padding */
+    border: 1px solid #ccc; /* Border */
+    border-radius: 5px; /* Rounded corners */
+    margin-bottom: 10px;
+    overflow-y: auto;
+}
+
+#classCodeTable {
+    border-collapse: collapse;
+    width: 100%;
+    padding: 5px;
+    color: #fff;
+    cursor: pointer;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    border-collapse: separate;
+    border-spacing: 0 10px; 
+}
+
+#classCodeTable td {
+    height: 40px; /* Fixed height for each td */
+    text-align: center;
+    vertical-align: middle;
+    background-color: #232422;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    padding: 5px;
+    border-spacing: 20px;
+}
+
+#classCodeTable td:hover {
+    background-color: #de3a3a;
+    border-radius: 5px; /* Add back the rounded corners on hover */
+}
+
+#classCodeTable tr::before {
+    content: "";
+    display: block;
+    width: 10px; /* or whatever thickness you want for the bar */
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#classCodeTable tr {
+    position: relative; /* to anchor the ::before pseudo-element */
+}
+
+#classCodeTable tr::before {
+    background-color: var(--random-color);
+}
+
+#scheduleResultTable {
+    height: calc(100vh - 255px); 
+    background-color: #f0f0f0; /* Background color */
+    padding-left: 15px; /* Padding */
+    padding-right: 15px; /* Padding */
+    border: 1px solid #ccc; /* Border */
+    border-radius: 5px; /* Rounded corners */
+    margin-bottom: 10px;
+    overflow-y: auto;
+}

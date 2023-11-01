@@ -1,0 +1,718 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+/* Properties for the overall entire page/website */
+body {
+  width: 100vw;
+  height: 100vh;
+  background-color: cornsilk;
+  overflow: clip;
+  margin: 0;
+  padding: 0;
+
+}
+
+* {
+	box-sizing: border-box;
+}
+
+/* Properties for the Borders that separate the columns and rows */
+#Borders {
+	position: absolute;
+}
+
+/* Schedule Table Properties */
+table, th, td {
+	border:1px solid SeaGreen;
+	border-collapse: collapse;
+}
+
+/* Column containers for the three titles at the top */
+div.TitleColumns {
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 98;
+	width: 100vw;
+	overflow-x: clip;
+	overflow-y: clip;
+	color: SeaGreen; 
+	font-family: apple chancery, cursive;
+
+}
+div.Title1Column {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 21.8vw;
+	height: 12.8vh;
+}
+div.Title2Column {
+	position: absolute;
+	left: 22.2vw;
+	top: 0;
+	width: 21.8vw;
+	min-width: 100px;
+	height: 12.8vh;
+}
+div.Title3Column {
+	position: absolute;
+	left: 44.2vw;
+	top: 0;
+	width: 55.8vw;
+	height: 12.8vh;
+}
+
+/* Class Selection Caption Properties */
+#ClassSelection {
+	white-space: nowrap;
+}
+
+/* Schedule Filter Caption Properties */
+#ScheduleFilter {
+	white-space: nowrap;
+}
+
+/* Duck Image Properties */
+img.DuckImage {
+
+}
+
+/* Schedule Builder Caption Properties */
+#ScheduleBuildCaption {
+	transform: translate(0, -50%);
+	white-space: nowrap;
+}
+
+/* Leftmost bottom column container */
+div.ClassColumn {
+	position: absolute;
+	left: 0;
+	top: 13.2vh;
+	width: 21.8vw;
+	height: 86.8vh;
+	overflow-y: scroll;
+	display: flex;
+  	justify-content: center;
+}
+
+/* Search Bar for classes */
+div.SearchBar input[type=text] {
+	position: absolute;
+	left: 55;
+	top: 10;
+  	padding: 6px;
+  	width: 220px;
+  	height: 50px;
+  	border-radius: 10px;
+  	border: 2px solid sienna;
+  	background-color: floralwhite;
+  	transition: 0.2s;
+  	transition-timing-function: ease-in;
+  	font-size: 19px;
+  	font-family: apple chancery, cursive;
+}
+div.SearchBar input[type=text]:hover {
+	border: 2px solid SeaGreen;
+	width: 300px;
+	left: 12;
+}
+div.SearchBar input[type=text]:focus {
+	color: SeaGreen;
+	border: 2px solid SeaGreen;
+	outline: none !important;
+	width: 300px;
+	left: 12;
+}
+
+/* Bottom middle container */
+div.PreviewColumn {
+	position: absolute;
+	left: 22.2vw;
+	top: 13.2vh;
+	width: 21.8vw;
+	height: 86.8vh;
+	overflow-y: scroll;
+	display: flex;
+  	justify-content: center;
+}
+
+/* Generate Schedule Button Properties */
+button.GenerateScheduleButton {
+	position: absolute;
+	top: 10;
+  	padding: 6px;
+  	width: 220px;
+  	min-width: 100px;
+  	height: 50px;
+  	border-radius: 10px;
+  	border: 2px solid sienna;
+  	background-color: floralwhite;
+  	transition: 0.2s;
+  	transition-timing-function: ease-in;
+  	color: SeaGreen;
+  	font-size: 25px;
+  	font-family: apple chancery, cursive;
+  	user-select: none;
+}
+button.GenerateScheduleButton:hover {
+  	border: 2px solid sienna;
+  	background-color: SeaGreen;
+  	color: floralwhite;
+  	width: 300px;
+}
+
+/* Schedule Filters Button Properties */
+button.ScheduleFiltersButton {
+	position: absolute;
+	top: 70;
+  	padding: 6px;
+  	width: 220px;
+  	min-width: 100px;
+  	height: 50px;
+  	border-radius: 10px;
+  	border: 2px solid sienna;
+  	background-color: floralwhite;
+  	transition: 0.2s;
+  	transition-timing-function: ease-in;
+  	color: SeaGreen;
+  	font-size: 25px;
+  	font-family: apple chancery, cursive;
+  	user-select: none;
+}
+button.ScheduleFiltersButton:hover {
+  	border: 2px solid sienna;
+  	background-color: SeaGreen;
+  	color: floralwhite;
+  	width: 300px;
+}
+
+/* Used for centering the Filters Popup */
+div.Page {
+	width: 100%;
+	height: 100%;
+	display: flex;
+  	justify-content: center;
+}
+
+/* Container for the Schedule Filters Popup */
+div.FiltersPopup {
+	visibility: hidden;
+	position: absolute;
+	top: 15vh;
+	width: 45vw;
+	height: 55vh;
+	border-radius: 15px;
+  	border: 3px solid sienna;
+  	background-color: floralwhite;
+  	box-shadow: 10px 15px 15px grey;
+  	display: flex;
+  	justify-content: center;
+}
+
+/* Title for the Filters Popup */
+p.PopupCaption {
+	position: absolute;
+	top: -20;
+	color: SeaGreen;
+  	font-size: 30px;
+  	font-family: apple chancery, cursive;
+}
+
+/* Properties for the individual filter options */
+div.FilterOptions {
+	position: absolute;
+	top: 100;
+	
+}
+
+/* All elements for the checkbox implementation of the schedule filters */
+.container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  color: SeaGreen;
+  font-family: apple chancery, cursive;
+  user-select: none;
+}
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 30px;
+  border-radius: 7px;
+  width: 30px;
+  background-color: sienna;
+}
+.container:hover input ~ .checkmark {
+  background-color: SeaGreen;
+}
+.container input:checked ~ .checkmark {
+  background-color: SeaGreen;;
+}
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+.container .checkmark:after {
+  left: 10px;
+  top: 5px;
+  width: 7px;
+  height: 13px;
+  border: solid cornsilk;
+  transition: 0.3s;
+  border-width: 0 3px 3px 0;
+  transform: rotate(40deg);
+}
+
+/* Apply Button Properties */
+button.ApplyFiltersButton {
+	position: absolute;
+	bottom: 10;
+  	padding: 6px;
+  	width: 120px;
+  	min-width: 100px;
+  	height: 55px;
+  	border-radius: 10px;
+  	border: 2px solid sienna;
+  	background-color: floralwhite;
+  	color: SeaGreen;
+  	font-size: 25px;
+  	font-family: apple chancery, cursive;
+  	user-select: none;
+}
+button.ApplyFiltersButton:hover {
+  	background-color: SeaGreen;
+  	color: floralwhite;
+}
+
+/* Properties for the Days filters */
+#DaysFilter {
+	background-color: floralwhite;
+	border: 2px solid sienna;
+	border-radius: 8px;
+	color: SeaGreen;
+	height: 40px;
+	font-size: 22px;
+  	font-family: apple chancery, cursive;
+}
+#DaysFilter:focus {
+	outline: none !important;
+}
+
+/* Properties for the Filter regarding before a certain time */
+#BeforeTimeFilter {
+	background-color: floralwhite;
+	border: 2px solid sienna;
+	border-radius: 8px;
+	color: SeaGreen;
+	height: 40px;
+	font-size: 22px;
+  	font-family: apple chancery, cursive;
+}
+#BeforeTimeFilter:focus {
+	outline: none !important;
+}
+
+/* Properties for the Filter regarding after a certain time */
+#AfterTimeFilter {
+	background-color: floralwhite;
+	border: 2px solid sienna;
+	border-radius: 8px;
+	color: SeaGreen;
+	height: 40px;
+	font-size: 22px;
+  	font-family: apple chancery, cursive;
+}
+#AfterTimeFilter:focus {
+	outline: none !important;
+}
+
+/* Container for the bottom rightmost schedule column */
+div.ScheduleColumn {
+	position: absolute;
+	left: 44.1vw;
+	top: 13.2vh;
+	height: 86.8vh;
+	width: 55.9vw;
+	overflow: scroll;
+}
+
+/* All table elements for large class schedule */
+tr.DaysofWeek {
+	color: SeaGreen; 
+	font-family: apple chancery, cursive;
+	font-size: 25;
+
+}
+th.DayTitles {
+	padding-left: calc(2.105vw);
+	padding-right: calc(2.105vw);
+}
+td.Times {
+	color: SeaGreen; 
+	font-family: apple chancery, cursive;
+	font-size: 18;
+	height: 20;
+	text-align: center;
+}
+td.ClassTimes {
+	color: SeaGreen; 
+	font-family: apple chancery, cursive;
+	height: 20;
+	text-align: center;
+}
+
+
+</style>
+</head>
+<body>
+
+<!--Borders for each section/title-->
+<svg overflow = clip; id = "Borders" width="5000" height="5000">
+  <rect x="22vw" y="0" rx="0" ry="0" width="0.01vw" height="100vh"
+  style="fill:sienna; stroke:sienna; stroke-width:5; opacity:1.0" />
+  
+  <rect x="44vw" y="0" rx="0" ry="0" width="0.01vw" height="100vh"
+  style="fill:sienna; stroke:sienna; stroke-width:5; opacity:1.0" />
+  
+  <rect id = "Horizontal" x="0" y="13vh" rx="0" ry="0" width="100vw" height="0.01vw"
+  style="fill:sienna; stroke:sienna; stroke-width:5; opacity:1.0" />
+</svg>
+
+<!--Titles for each section-->
+<div class = "TitleColumns">
+	<!--Duck Logo next to Schedule Builder Title-->
+
+	<div class = "Title1Column">
+		<center>
+		<p id = "ClassSelection" style = "font-size: 40;"> Class Selection</p>
+		</center>
+	</div>
+
+	<div class = "Title2Column">
+		<center>
+		<p id = "ScheduleFilter" style = "font-size: 40;"> Schedule Filter </p>
+		</center>
+	</div>
+
+	<div class = "Title3Column">
+		<center>
+		<p id = "ScheduleBuildCaption" style = "font-size: 60;"> <img class = "DuckImage" src = "Duck.png" alt = "DuckLogo" width = "70" height = "auto"> Schedule Builder </p>
+		</center>
+	</div>
+
+</div>
+
+<!--Actual bottom columns with buttons, schedule, etc.-->
+<div class = "BottomColumns">
+	<div class = "ClassColumn"> 
+		<div class= "SearchBar">
+ 			<input type="text" placeholder="Search for Classes...">
+		</div>
+	</div>
+
+	<div class = "PreviewColumn"> 
+		<button class = "GenerateScheduleButton" onclick = "generateSchedule()"> Generate Schedule</button>
+		<button class = "ScheduleFiltersButton" onclick = "filterPopup()"> Schedule Filters</button>
+		
+	</div>
+
+	<div class = "ScheduleColumn"> 
+		<table style = "width:600">
+			<tr class = "DaysofWeek">
+				<th> </th>
+				<th class = "DayTitles"> Monday </th>
+				<th class = "DayTitles"> Tuesday </th>
+				<th class = "DayTitles"> Wednesday </th>
+				<th class = "DayTitles"> Thursday </th>
+				<th class = "DayTitles"> Friday </th>
+			</tr>
+			
+			<tr> <td class = "Times" rowspan = "2"> 8:00 </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr>
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "ClassTimes"> </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "ClassTimes"> </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "Times" rowspan = "2"> 9:00 </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr>
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "ClassTimes"> </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "ClassTimes"> </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "Times" rowspan = "2"> 10:00 </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr>
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "ClassTimes"> </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "ClassTimes"> </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "Times" rowspan = "2"> 11:00 </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr>
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "ClassTimes"> </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "ClassTimes"> </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "Times" rowspan = "2"> 12:00 </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr>
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "ClassTimes"> </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "ClassTimes"> </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "Times" rowspan = "2"> 1:00 </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr>
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "ClassTimes"> </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "ClassTimes"> </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "Times" rowspan = "2"> 2:00 </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr>
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "ClassTimes"> </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "ClassTimes"> </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "Times" rowspan = "2"> 3:00 </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr>
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "ClassTimes"> </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "ClassTimes"> </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "Times" rowspan = "2"> 4:00 </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr>
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "ClassTimes"> </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "ClassTimes"> </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "Times" rowspan = "2"> 5:00 </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr>
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "ClassTimes"> </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "ClassTimes"> </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "Times" rowspan = "2"> 6:00 </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr>
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "ClassTimes"> </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "ClassTimes"> </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "Times" rowspan = "2"> 7:00 </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr>
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "ClassTimes"> </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+			
+			<tr> <td class = "ClassTimes"> </td> 
+				<td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td> <td class = "ClassTimes"> </td>
+			</tr>
+
+			
+			
+			
+
+			
+		</table>
+
+	</div>
+</div>
+
+<!--Schedule Filters Popup-->
+<div class = "Page">
+	<div class = "FiltersPopup" id = "filters">
+		<p class = "PopupCaption"> Schedule Filters: </p>
+		<div class = "FilterOptions">
+			<label class="container">No Consecutive Classes
+			  <input type="checkbox">
+			  <span class="checkmark"></span>
+			</label>
+			<label class="container">No Classes on 
+			  <input type="checkbox">
+			  <span class="checkmark"></span>
+			  <select id="DaysFilter">
+  				<option value="Monday" selected>Monday</option>
+  				<option value="Tuesday">Tuesday</option>
+  				<option value="Wednesday">Wednesday</option>
+  				<option value="Thursday">Thursday</option>
+  				<option value="Friday">Friday</option>
+			  </select>
+			</label>
+			<label class="container">No Classes before
+			  <input type="checkbox">
+			  <span class="checkmark"></span>
+			  <select id="BeforeTimeFilter">
+  				<option value="9am" selected>9 am</option>
+  				<option value="10am">10 am</option>
+  				<option value="11am">11 am</option>
+  				<option value="12pm">12 pm</option>
+  				<option value="1pm">1 pm</option>
+			  </select>
+			</label>
+			<label class="container">No Classes after
+			  <input type="checkbox">
+			  <span class="checkmark"></span>
+			  <select id="AfterTimeFilter">
+  				<option value="12pm" selected>12 pm</option>
+  				<option value="1pm">1 pm</option>
+  				<option value="2pm">2 pm</option>
+  				<option value="3pm">3 pm</option>
+  				<option value="4pm">4 pm</option>
+  				<option value="5pm">5 pm</option>
+  				<option value="6pm">6 pm</option>
+  				<option value="7pm">7 pm</option>
+  				<option value="8pm">8 pm</option>
+			  </select>
+			</label>
+		</div>
+		<button class = "ApplyFiltersButton" onclick = "filterPopdown()"> Apply</button>
+	</div>
+</div>
+
+
+<script>
+function filterPopup() {
+	document.getElementById("filters").style.visibility = "visible";
+}
+
+function filterPopdown() {
+	document.getElementById("filters").style.visibility = "hidden";
+}
+
+function generateSchedule() {
+
+}
+</script>
+
+
+</body>
+</html>

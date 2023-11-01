@@ -1,0 +1,35 @@
+/* Set the menu-bar to take 100% width */
+.menu-bar {
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* padding: 0px 20px; */
+    height: 50px;
+    width: 100%;
+}
+
+.menu-bar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center; /* Vertically center the menu items */
+}
+
+.menu-bar li {
+    margin-right: 50px;
+    padding: 0 10px; /* Add horizontal padding to menu items */
+}
+
+.menu-bar a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.menu-bar a:hover {
+    color: #3fd113;
+}
