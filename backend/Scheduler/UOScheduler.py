@@ -209,12 +209,14 @@ def main():
     user_course_list = organizeCourses(user_courses, total_course_dict)
     
     # Print the user's selected courses in the dictionary format
-    print("\033c", end="")
+    # print("\033c", end="")
     print("Possible Schedules:")
 
     # Find all of the base schedules
     all_schedules = []
     base_schedules = find_base_lecture_schedule(user_course_list)
+
+    print(base_schedules)
     for base_schedule in base_schedules:
         all_schedules.extend(find_full_schedule(base_schedule, user_course_list))
  
