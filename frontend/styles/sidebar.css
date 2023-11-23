@@ -1,0 +1,17 @@
+#right-sidebar {
+    flex: 0.8;
+    padding: 0;
+}
+
+.sidebar {
+    flex: 0.9;
+    display: flex;
+    flex-direction: column;
+    padding-top: 0px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-right: 1px solid #e0e0e0;
+    box-sizing: border-box;
+    overflow: auto;
+}

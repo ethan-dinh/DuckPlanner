@@ -1,0 +1,119 @@
+/* Apply the same styles to the filter selector as the input field */
+#filter {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    border: 1px solid #e0e0e0;
+    background-color: #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    transition: border-color 0.3s, box-shadow 0.3s; /* Smooth transition for interactions */
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* Consistent flexbox layout for filter label and selector */
+.filter-selector {
+    display: flex;
+    align-items: center;              /* Vertically centers the content */
+    gap: 10px;                        /* Spacing between label and selector */
+}
+
+.filter-label {
+    flex: 1; /* Allow the label to expand to fill available space */
+    display: flex;
+    align-items: center; /* Vertically center the label */
+}
+
+.filter-selector label {
+    margin-right: 10px; /* Add spacing between label and select */
+    font-size: 18px;
+}
+
+/* Add styles for the modern button */
+.modern-button {
+    background-color: #232422; /* Background color */
+    color: #fff; /* Text color */
+    border: none; /* Remove border */
+    padding: 10px 20px; /* Padding for spacing */
+    font-size: 16px; /* Font size */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Cursor style on hover */
+    transition: background-color 0.3s, color 0.3s; /* Smooth color transition */
+    width: 100%; /* Match the width of the search field */
+    margin-top: 10px; /* Add spacing between the search field and button */
+    font-size: 14px;
+    align-self: center; /* Center the button horizontally */
+}
+
+.mobile-button {
+    background-color: #5d8633; /* Background color */
+}
+
+.modern-button:hover {
+    background-color: #2ea008; /* Background color on hover */
+}
+
+.btn-container {
+    display: flex;
+    justify-content: center; /* Center the buttons horizontally */
+    align-items: center;     /* Center the buttons vertically */
+    margin-top: 15px;        /* Add some space on top of the buttons */
+}
+
+/* Basic Button Styling for toggle-btn */
+.toggle-btn {
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: all 0.3s;
+    outline: none;
+    cursor: pointer;
+    margin: 5px;
+    text-align: center;
+    width: 120px;
+}
+
+/* Loading bar styles */
+.loader-bar {
+    width: 0;
+    min-height: 3px; /* Height of the loading bar */
+    background-color: #35c25d; /* Loading bar color */
+    position: relative;
+    transition: width 0.2s linear; /* Animation duration and timing function */
+    z-index: 999; /* Ensure it's above other content */
+}
+
+input[type="text"] {
+    width: 100%; /* Adjust the width calculation based on your padding */
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    background-color: #e0e0e0;
+    box-sizing: border-box; /* Include padding and border in total width */
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+/* Style the search container */
+.search-container {
+    position: relative;
+}
+
+.error-message {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #ff4d4f;
+    color: white;
+    font-size: 16px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+}
+

@@ -1,0 +1,118 @@
+.mobile {
+    display: none; /* Hide mobile elements initially */
+}
+
+@media (max-width: 768px) {
+    .mobile {
+        display: block; /* Show mobile elements in small screens */
+    }
+    
+    .menu-bar {
+        display: none;
+    }
+
+    .matrix {
+        display: none;
+    }
+
+    #right-sidebar {
+        flex-grow: 1;
+        overflow-y: hidden;
+        display: none;
+    }
+
+    #left-most-sidebar {
+        flex: 1;
+    }
+
+    #mobileNav {
+       height: 60px;
+       border-bottom: 1px solid #ccc;
+    }
+
+    #preview-container {
+        display: none;
+    }
+
+    #selected-schedule-container {
+        padding: 30px 50px;
+    }
+
+    #preview-table {
+        padding: 30px 50px;
+    }
+
+    #crn-container {
+        margin-top: 0;
+        display: none;
+    }
+
+    .sidebar {
+        border-right: none;
+    }
+
+    .mobile-bar {
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        border-bottom: 1px solid #ccc;
+        color: black;
+    }
+    
+    .menu-bar-center {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+    }
+    
+    .menu-bar-center a {
+        flex: 1; /* Each link will take up an equal amount of space */
+        text-align: center; /* Center the text within each link */
+        margin: 0;
+        padding: 10px;
+        text-decoration: none;
+        color: black;
+    }
+
+    .credit-container{
+        margin-left: 20px;
+    }
+
+    .mobile-button {
+        width: 100%;
+        border-radius: 0;
+        margin: 0;
+    }
+
+    .menu-bar-center a.active {
+        border-bottom: 1px solid #2d2d2d; /* Solid border for the active link */
+        background-color: #f1f1f1;
+    }
+
+    #interaction-container {
+        display: block;
+    }
+    
+    #schedulerTable td {
+        font-size: 10px;
+    }
+
+    #schedulerTable td:first-child {
+        font-size: 9px;
+        padding-right: 0px;
+    }
+
+    #schedulerTable td:first-child {
+        max-width: 30px;
+    }
+
+    #schedulerTable th {
+        font-size: 10px;
+    }
+}
+
+.mobile-bar {
+    display: none;
+}

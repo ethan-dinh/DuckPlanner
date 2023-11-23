@@ -1,0 +1,80 @@
+#preview-container {
+    flex-grow: 1;
+    display: flex; /* Make preview-container a flex container */
+    flex-direction: column; /* Stack its children vertically */
+    overflow-y: auto; /* Add scrolling to this container if content is too long */
+}
+
+#preview-table {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    align-items: center; 
+    overflow-y: auto;
+
+    padding: 30px 15px; 
+}
+
+#selected-schedule-view {
+    margin-top: 10px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    padding-top: 16px;
+    display: none;
+}
+
+#selected-schedule-container {
+    padding: 30px 15px;
+    display: none; 
+}
+
+.mini-preview {
+    flex: 0 0 auto;
+    border-collapse: collapse;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;  
+    padding: 0;
+}
+
+.mini-preview td {
+    height: 1px;
+    width: 14.28%;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding: 0;
+}
+
+.mini-preview tr:last-child td {
+    border-bottom: none;
+}
+
+.mini-preview td:last-child {
+    border-right: none;
+}
+
+.schedule-container {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), /* Lower shadow */
+                0 10px 20px rgba(0, 0, 0, 0.1); /* Further diffuse shadow */
+    border-radius: 5px;
+    padding: 5px;
+    display: block;
+    width: 100%; /* Adjust width to account for padding */
+    box-sizing: border-box;
+    background-color: #fff;
+    transition: transform 0.3s ease; /* Smooth transition for a hover effect */
+}
+
+.schedule-container.selected::before {
+    content: "✓";
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.schedule-container.selected:hover {
+    transform: none !important; /* Remove hover effect */
+}
+
+.schedule-container:hover {
+    transform: translateY(-5px); /* Raise the container more on hover */
+}
