@@ -1,0 +1,15 @@
+#crn-container {
+    margin-top: auto;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+#crn-table {
+    visibility: hidden;
+}
+
+#crn-table h3 {
+    margin: 0;  /* Remove margins to ensure vertical centering */
+    white-space: nowrap; /* This will prevent wrapping */
+}

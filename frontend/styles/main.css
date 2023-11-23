@@ -1,0 +1,45 @@
+/* Set the body and html elements to 100% height */
+@font-face {
+    font-family: Lato;
+    font-style: normal;
+    font-weight: 400;
+    src: "../fonts/Lato/Lato-Regular.ttf";
+}
+  
+body {
+    font-family: Lato, sans-serif;
+    overflow: hidden;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+h3 {
+    font-size: 1em;
+}
+
+#main-screen {
+    display: flex;
+    flex-direction: column;
+    height: calc(var(--vh, 1vh) * 100);
+    width: 100vw;
+}
+
+#interaction-container {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1; 
+    overflow: auto;
+    width: 100%;
+}
+
+footer {
+    text-align: center;
+    border-top: 1px solid #ccc;
+    padding: 10px;
+    color: #616161;
+    font-size: 0.8em;
+  }

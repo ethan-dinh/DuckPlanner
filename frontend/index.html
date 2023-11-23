@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1.0">
+        
+        <link rel="shortcut icon" href="./favicon.ico" />
+        <title>Duck Planner</title>
+
+        <link rel="stylesheet" href="styles/coloris.min.css"/>
+        <link rel="stylesheet" href="styles/main.css">
+        <link rel="stylesheet" href="styles/main-view.css">
+        <link rel="stylesheet" href="styles/course-matrix.css">
+        <link rel="stylesheet" href="styles/elements.css">
+        <link rel="stylesheet" href="styles/sidebar.css">
+        <link rel="stylesheet" href="styles/menu-bar.css">
+        <link rel="stylesheet" href="styles/search-container.css">
+        <link rel="stylesheet" href="styles/preview-table.css">
+        <link rel="stylesheet" href="styles/crn-table.css">
+        <link rel="stylesheet" href="styles/mobile.css">
+
+        <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+        <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet'/>
+    </head>
+    
+    <body>
+        <div id="main-screen">
+            <div class="loader-bar"></div>
+            <nav class="menu-bar">
+                <img src="logo.png" alt="logo" id="logo">
+                <h1 style="margin-left: 10px;">DUCK PLANNER</h1>
+                <div class="credit-container" id="credits">
+                    0 Credits
+                </div>
+                <div class="menu-bar-center">
+                    <a id="matrixViewButton" onclick="showMatrixView();">Scheduler</a>
+                    <a id="mapViewButton" onclick="showMapView();">Map</a>
+                </div>
+            </nav>
+
+            <nav class="mobile-bar">
+                <img src="logo.png" alt="logo" id="logo">
+                <h1 style="margin-left: 10px;">DUCK PLANNER</h1>
+                <div class="credit-container" id="credits-mobile">
+                    0 Credits
+                </div>
+            </nav>
+
+            <nav class="mobile-bar">
+                <div class="menu-bar-center">
+                    <a id="mobileCourse" onclick="showMobileCourseView();">Courses</a>
+                    <a id="mobilePreview" onclick="showPreviews();">Previews</a>
+                    <a id="mobileCalendar" onclick="showMobileMatrix();">Calendar</a>
+                </div>
+            </nav>
+
+            <div id="interaction-container">
+                <div class="sidebar" id="left-most-sidebar">
+                    <div id="class-code-container">
+                        <div class="class-code-table">
+                            <div class="table-container" id="dynamicHeightContainer">
+                                <table id="classCodeTable">
+                                    <tbody id="classCodeTableBody">
+                                        <!-- Class codes will be added here dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="class-search-container">
+                        <h3 style="margin-top: 0px">Class Search</h3>
+                        <input type="text" id="classSearch" placeholder="XXXX - 000">
+                        <div id="search-results"></div>                    
+                    </div>
+                </div>
+
+                <div class="sidebar" id="right-sidebar">
+                    <!-- Filter Selector Tool -->
+                    
+                    <div id="preview-container">
+                        <h3 style=" margin-left: 20px; margin-right: 20px;">Filter Selector</h3>
+                        <div class="filter-selector">
+                            <select id="filter">
+                                <option value="option1">Most Compact</option>
+                                <option value="option2">Earliest End</option>
+                                <option value="option3">Latest Start</option>
+                                <option value="option4">Earliest End – PRIO ASYNC</option>
+                            </select>
+                        </div>
+                        
+                        <div id="selected-schedule-view">
+                            <h3 style=" margin: 0px 20px">Selected Schedule</h3>
+                            <div id="selected-schedule-container"></div>
+                        </div>
+                        
+                        <div id="preview-table">
+                            <!-- Schedule Previews will be generated here -->
+                        </div>
+                    </div>
+
+                    <div id="crn-container">
+                        <div id="crn-table"></div>
+                        <button class="modern-button" id="Copy CRNs">Copy CRNs</button>
+                    </div>
+                </div>
+
+                <div class="matrix" id="matrixContainer">
+                    <button class="modern-button mobile-button mobile" id="Copy CRNs">Map View</button>
+                    <table id="schedulerTable">
+                        <colgroup id="columnGroup">
+                        </colgroup>
+                    </table>
+
+                    <div id='map'></div>
+                </div>
+            </div>
+            <footer>
+                Made with ❤️ for the University of Oregon 2023
+            </footer>
+        </div>
+
+        <script src="scripts/coloris.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.1"></script>
+
+        <script src="scripts/MobileMenuBar.js"></script>
+        <script src="scripts/MenuBar.js"></script>
+
+        <script src="scripts/GenerateMatrix.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/fuse.js"></script>
+        <script src="scripts/AddClasses.js"></script>
+        <script src="scripts/Map.js"></script>
+        <script src="scripts/GeneratePreview.js"></script>
+        <script src="scripts/GenerateSchedules.js"></script>
+        <script src="scripts/ColorPicker.js"></script>
+        <script src="scripts/sortSchedules.js"></script>
+    </body>
+</html>
