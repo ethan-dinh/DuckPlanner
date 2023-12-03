@@ -1,0 +1,74 @@
+.matrix {
+    flex-grow: 1;
+    overflow-y: scroll; 
+    justify-content: center;
+    align-items: center;
+}
+
+#schedulerTable {
+    border-collapse: collapse;
+    width: 95%;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    table-layout: fixed;
+}
+
+/* Style table headers (th) */
+#schedulerTable th {
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+}
+
+#schedulerTable td {
+    border-top: none; /* Remove all top borders by default */
+    border-bottom: none; /* Remove all bottom borders by default */
+    border-right: 1px solid #e0e0e0;
+    border-left: 1px solid #e0e0e0;
+    font-size: 13px;
+    padding: 0px; /* Reduced from 10px to 5px */
+    height: 13px; 
+    font-weight: bold;
+    overflow: hidden;
+}
+
+#schedulerTable td.schedule-cell {
+    padding: 10px;
+    vertical-align: top;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+#schedulerTable td.schedule-cell:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), /* Lower shadow */
+                0 10px 20px rgba(0, 0, 0, 0.1); /* Further diffuse shadow */
+}
+
+/* Display borders for cells at the beginning of each hour */
+#schedulerTable td.hour-start {
+    border-top: 1px solid #e0e0e0; /* Add top border */
+}
+
+/* Display borders for cells at the end of each hour */
+#schedulerTable td.hour-end {
+    border-bottom: 1px solid #e0e0e0; /* Add bottom border */
+}
+
+/* Style the first column (e.g., time column) */
+#schedulerTable td:first-child {
+    white-space: nowrap;
+    font-size: 14px;
+    text-align: center; /* Align the time to the right side of the cell */
+    padding-right: 5px; /* Some padding to ensure the time doesn't touch the border */
+    padding-top: 0px;
+    vertical-align: top;
+    border: none;
+    font-size: 12px; 
+    width: 30px;
+}
+
+#schedulerTable th:first-child {
+    width: 30px;
+    padding: 0;
+    padding-right: 20px;
+}

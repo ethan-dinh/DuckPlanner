@@ -57,7 +57,7 @@ function generateMatrix() {
 
 function getRowSpan(matrix, i, j) {
     let rowspan = 1;
-    while (i + rowspan < matrix.length && matrix[i][j] === matrix[i + rowspan][j] && !accountedFor[i + rowspan][j]) {
+    while (i + rowspan < matrix.length && matrix[i + rowspan][j] && matrix[i][j][-1] === matrix[i + rowspan][j][-1] && !accountedFor[i + rowspan][j]) {
         rowspan++;
     } for (let k = i; k < i + rowspan; k++) {
         accountedFor[k][j] = true;
@@ -72,15 +72,14 @@ function renderHelper(cell, matrix, content, i, j, opacity) {
         cell.style.opacity = opacity;
         cell.classList.add('schedule-cell');
 
-        let dataArr = content.split(',');
-        const name = dataArr[0];
-        const type = dataArr[1];
-        const crn = dataArr[2];
-        const desc = dataArr[3].trim();
-        const time = dataArr[4];
+        const name = content[0];
+        const type = content[1];
+        const loc = content[2];
+        const desc = content[3];
+        const time = content[4];
 
         const tupleKey = `${name},${desc}`;
-        const color = colorMapping[tupleKey] || '#e0e0e0';
+        const color = colorMapping[tupleKey] || 'black';
 
         cell.style.backgroundColor = color;    
         cell.rowSpan = rowspan;
@@ -88,19 +87,45 @@ function renderHelper(cell, matrix, content, i, j, opacity) {
         cell.innerHTML = `
             <div class="class-info">
                 <div class="class-details">
-                    <div class="course-title">${name} | ${type}</div>
+                    <div class="course-title">${name} | ${type.charAt(0).toUpperCase() + type.slice(1)}</div>
                     <div class="course-description">${desc}</div>
-                    <div class="course-loc"> ${time} | CRN: ${crn} </div>
+                    <div class="course-loc"> ${loc} | ${time} </div>
                 </div>
             </div>
         `;
+
+        // Add a hover event listener to the cell
+        cell.addEventListener('mouseover', () => {
+            // Display the teacher's name
+            const teacherName = crn_dict[content[5]]["Instructor"];
+
+            // Create a tooltip element
+            const tooltip = document.createElement('div');
+            tooltip.className = 'course-loc-tooltip';
+            tooltip.textContent = `${teacherName} | CRN: ${content[5]}`;
+
+            // Append the tooltip to the body
+            document.body.appendChild(tooltip);
+
+            // Calculate the position of the tooltip based on the cell's position
+            const rect = cell.getBoundingClientRect();
+            tooltip.style.left = rect.left + window.scrollX + 'px';
+            tooltip.style.top = rect.top + window.scrollY - tooltip.offsetHeight -5 + 'px'; // Position above the cell
+            tooltip.style.width = rect.width - 20 + 'px';
+
+            // Remove the tooltip when the mouse leaves the cell
+            cell.addEventListener('mouseout', () => {
+                if (tooltip.parentNode)
+                    document.body.removeChild(tooltip);
+            });
+        });
     } return rowspan;
 }
 
 function renderMatrix(matrix) {
     // reset the matrix
     generateMatrix();
-
+ 
     accountedFor = Array.from({ length: matrix.length }, () => Array(matrix[0].length).fill(false));
     const table = document.getElementById("schedulerTable");
 
@@ -113,7 +138,7 @@ function renderMatrix(matrix) {
             if ((currentContent && currentContent.includes("ASYNC")) || (selectedContent && selectedContent.includes("ASYNC")))
                 continue;          
         
-            if ((selectedContent || currentContent) && !accountedFor[i][j]) {
+            if ((selectedContent || currentContent) && !accountedFor[i][j]) {  
                 let offset = 0;
                 for (let k = j-1; k > -1; k--) {
                     if (accountedFor[i-1][k]) offset++;
@@ -122,8 +147,8 @@ function renderMatrix(matrix) {
                 const currentCell = table.rows[i + 1].cells[j + 1 - offset];
                 const content = selectedContent || currentContent; 
                 const currMatrix = selectedContent ? selectedMatrix : matrix;               
-                const rowspan = renderHelper(currentCell, currMatrix, content, i, j, selectedContent ? 1 : 0.3);
-                
+                const rowspan = renderHelper(currentCell, currMatrix, content, i, j, selectedContent ? 1 : 0.3); 
+
                 for(let k = 0; k < rowspan - 1; k++) 
                     table.rows[i + 2 + k].deleteCell(-1);
             }
@@ -195,8 +220,9 @@ function convertToScheduleMatrices(proposedSchedules) {
                     const type = data[4];
                     const crn = data[5];
                     const desc = data[6];
+                    const location = classData[`${code},${desc}`].byCRN[crn][0].Location
 
-                    scheduleMatrix[rowIndex + i][columnIndex] = `${code}, ${type}, ${crn}, ${desc}, ${timeStr}`;
+                    scheduleMatrix[rowIndex + i][columnIndex] = [code, type, location, desc, timeStr, crn];
                 }
             }
         });
@@ -205,3 +231,40 @@ function convertToScheduleMatrices(proposedSchedules) {
 
     return schedulesList;
 }
+
+function copyCRNs() {
+    if (crn_list.length === 0) {
+        displayErrorMessage("Please select a schedule first.");
+        return;
+    }
+
+    // Get the text content from the h3 inside the crn-table
+    const textToCopy = crn_list.join(", ");
+
+    // Use the Clipboard API to copy the text
+    navigator.clipboard.writeText(textToCopy).then(function() {
+        console.log('Text successfully copied to clipboard');
+
+        if(ifMobile) {
+            origin_object = document.getElementById("Footer-CRNs");
+            // Get the location of the selected schedule
+            const rect = origin_object.getBoundingClientRect();
+
+            // Calculate origin based on button's position
+            const originX = (rect.left + rect.right) / 2 / window.innerWidth;
+            const originY = (rect.top + rect.bottom) / 2 / window.innerHeight;        
+
+            // Trigger the confetti from the button's position
+            confetti({
+                particleCount: 300,
+                spread: 50,
+                origin: { x: originX, y: originY }
+            });
+        }
+    }).catch(function(err) {
+        console.error('Unable to copy text to clipboard', err);
+    });
+}
+
+document.getElementById("Copy-CRNs").addEventListener("click", copyCRNs);
+document.getElementById("Footer-CRNs").addEventListener("click", copyCRNs);

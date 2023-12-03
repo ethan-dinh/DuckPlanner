@@ -1,0 +1,191 @@
+/* FILTER STYLES */
+#filter-span {
+    padding : 10px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor : pointer;
+    display: block;
+}
+
+#filter:disabled {
+    opacity: 0.5;
+}
+  
+#filter-span::after {
+    float: right;
+    right: 10%;
+    content: "+";
+}
+
+.slide {
+    clear:both;
+    width:100%;
+    height:0px;
+    overflow: hidden;
+    text-align: left;
+    border-radius: 5px;
+}
+
+#filter-ul {
+    list-style-type: none;
+    padding-top: 5px;
+    padding-left: 0px;
+    margin-top: 0px;
+}
+  
+.slide li {
+    padding : 0px 10px 0px 10px;
+    text-decoration : none;
+    background : #eeeeee;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+#touch {position: absolute; opacity: 0; height: 0px;}    
+
+#touch:checked + .slide {height: auto;} 
+
+li a {
+    text-decoration : none; 
+    color : black;
+    cursor : pointer;
+    width: 100%;
+    display: block;
+    padding: 10px 0px 10px 0px;
+}
+
+li:hover {
+    background-color: #ccc;
+}
+
+/* PREVIEW STYLES */
+#preview-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: hidden;
+}
+
+#preview-table, #save-table{
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    align-items: center; 
+    padding: 30px 15px; 
+    overflow-y: auto;
+}
+
+#selected-schedule-view {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    padding-top: 16px;
+    display: none;
+}
+
+#selected-schedule-container {
+    padding: 15px 15px 30px 15px;
+    display: none; 
+}
+
+.mini-preview {
+    flex: 0 0 auto;
+    border-collapse: collapse;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;  
+    padding: 0;
+}
+
+.mini-preview td {
+    height: 1.25px;
+    width: 14.28%;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding: 0;
+}
+
+.mini-preview tr:last-child td {
+    border-bottom: none;
+}
+
+.mini-preview td:last-child {
+    border-right: none;
+}
+
+.schedule-container {
+    border-radius: 5px;
+    padding: 5px;
+    display: block;
+    width: 100%; /* Adjust width to account for padding */
+    box-sizing: border-box;
+    background-color: #fff;
+    transition: transform 0.3s ease; /* Smooth transition for a hover effect */
+}
+
+.schedule-container.selected:hover {
+    transform: none !important; /* Remove hover effect */
+}
+
+/* Footer Buttons */
+#page-button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+}
+
+#icon-next {
+    width: 20px;
+}
+
+#icon-prev {
+    width: 20px;
+    transform: rotate(180deg);
+}
+
+.page-btn {
+    padding: 5px 20px !important;
+}
+
+.page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#save-table {
+    padding-top: 10px;
+    gap: 20px;
+}
+
+/* Save Schedules View */
+.preview {
+    display: flex;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+    border-radius: 5px;
+    flex-direction: row;
+    width: 100%;
+    transform: translateZ(0);
+    transition: transform 0.3s ease; /* Smooth transition for a hover effect */
+}
+
+.identifier {
+    width: 35px;
+    display: flex;
+    justify-content: center;
+    background-color: #383A36;
+    color: #fff;
+    text-align: center;
+    align-items: center;
+    border-radius: 5px 0px 0px 5px;
+    font-size: 13px;
+}
+
+.identifier.selected {
+    background-color: #35c25d;
+    color: #fff;
+}
+
+.preview:hover {
+    transform: translateY(-5px); /* Raise the container more on hover */
+}

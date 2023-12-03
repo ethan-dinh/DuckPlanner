@@ -1,138 +1,225 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1.0">
-        
-        <link rel="shortcut icon" href="./favicon.ico" />
-        <title>Duck Planner</title>
-
-        <link rel="stylesheet" href="styles/coloris.min.css"/>
-        <link rel="stylesheet" href="styles/main.css">
-        <link rel="stylesheet" href="styles/main-view.css">
-        <link rel="stylesheet" href="styles/course-matrix.css">
-        <link rel="stylesheet" href="styles/elements.css">
-        <link rel="stylesheet" href="styles/sidebar.css">
-        <link rel="stylesheet" href="styles/menu-bar.css">
-        <link rel="stylesheet" href="styles/search-container.css">
-        <link rel="stylesheet" href="styles/preview-table.css">
-        <link rel="stylesheet" href="styles/crn-table.css">
-        <link rel="stylesheet" href="styles/mobile.css">
-
-        <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
-        <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet'/>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1.0">
     
-    <body>
-        <div id="main-screen">
-            <div class="loader-bar"></div>
-            <nav class="menu-bar">
-                <img src="logo.png" alt="logo" id="logo">
-                <h1 style="margin-left: 10px;">DUCK PLANNER</h1>
-                <div class="credit-container" id="credits">
-                    0 Credits
-                </div>
-                <div class="menu-bar-center">
-                    <a id="matrixViewButton" onclick="showMatrixView();">Scheduler</a>
-                    <a id="mapViewButton" onclick="showMapView();">Map</a>
-                </div>
-            </nav>
+    <link rel="shortcut icon" href="./favicon.ico" />
+    <title>Duck Planner</title>
 
-            <nav class="mobile-bar">
-                <img src="logo.png" alt="logo" id="logo">
-                <h1 style="margin-left: 10px;">DUCK PLANNER</h1>
-                <div class="credit-container" id="credits-mobile">
-                    0 Credits
-                </div>
-            </nav>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/coloris.min.css"/>
+    <link rel="stylesheet" href="styles/login-popup.css">
+    
+    <link rel="stylesheet" href="styles/elements.css">
+    <link rel="stylesheet" href="styles/sidebar.css">
+    <link rel="stylesheet" href="styles/header.css">
+    
+    <link rel="stylesheet" href="styles/window-search.css">
+    <link rel="stylesheet" href="styles/window-preview.css">
+    <link rel="stylesheet" href="styles/window-calendar.css">
+    
+    <link rel="stylesheet" href="styles/mobile.css">
 
-            <nav class="mobile-bar">
-                <div class="menu-bar-center">
-                    <a id="mobileCourse" onclick="showMobileCourseView();">Courses</a>
-                    <a id="mobilePreview" onclick="showPreviews();">Previews</a>
-                    <a id="mobileCalendar" onclick="showMobileMatrix();">Calendar</a>
-                </div>
-            </nav>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet'/>
+</head>
 
-            <div id="interaction-container">
-                <div class="sidebar" id="left-most-sidebar">
+<body>
+    <div id="main-screen">
+        <div class="loader-bar"></div>
+        <nav class="menu-bar">
+            <img src="logo.png" alt="logo" id="logo">
+            <h1 style="margin-left: 10px;">DUCK PLANNER</h1>
+            <div class="credit-container" id="credits">
+                0 Credits
+            </div>
+            <div class="menu-bar-center">
+                <a id="matrixViewButton" class="active" onclick="showMatrixView();">Scheduler</a>
+                <a id="mapViewButton" onclick="showMapView();">Map</a>
+                <a id="savedSchedulesButton" style="display:none" onclick="showSavedView();">Saved Schedules</a>
+            </div>
+
+            <div id="crn-table"></div>
+            <button class="modern-button" id="Copy-CRNs">
+                <img src="./icons/copy.png" alt="Copy" id="icon-copy">
+                <span class="button-text">Copy CRNs</span>
+            </button>
+
+            <button class="modern-button" id="login">
+                <img src="./icons/login.png" alt="Login" id="icon-login">
+                <span class="button-text">Sign In</span>
+            </button>
+
+            <button class="modern-button" id="saveSchedule" style="display:none">
+                <img src="./icons/save.png" alt="Save" id="icon-save">
+                <span class="button-text">Save Schedule</span>
+            </button>
+
+            <button class="modern-button" id="logout" style="display:none">
+                <img src="./icons/logout.png" alt="logout" id="icon-logout">
+                <span class="button-text">Logout</span>
+            </button>
+
+            <div id="profile" style="display:none">
+                <p id="userInfo">Profile</p>
+            </div>
+        </nav>
+
+        <nav class="mobile-bar">
+            <img src="logo.png" alt="logo" id="logo">
+            <h1 style="margin-left: 10px;">DUCK PLANNER</h1>
+            <div class="credit-container" id="credits-mobile">
+                0 Credits
+            </div>
+        </nav>
+
+        <nav class="mobile-bar">
+            <div class="menu-bar-center">
+                <a id="mobileCourse" class="active" onclick="showMobileCourseView();">Courses</a>
+                <a id="mobilePreview" onclick="showPreviews();">Previews</a>
+                <a id="mobileCalendar" onclick="showMobileMatrix();">Calendar</a>
+            </div>
+        </nav>
+
+        <div id="interaction-container">
+            <div class="sidebar" style="display:none" id="saved-schedule-container">
+                <h3 style="margin: 0px">Saved Schedules</h3>  
+                <div id="instructions">To remove a schedule, hover over the schedule number.</div>
+                
+                <div id="save-table">
+                    <!-- Schedule Previews will be generated here -->
+                </div>
+                
+            </div>
+
+            <div class="sidebar" id="left-most-sidebar">
+                <h3 style="margin: 0px">Class Search</h3>
+                <div id="class-search-container">
                     <div id="class-code-container">
                         <div class="class-code-table">
-                            <div class="table-container" id="dynamicHeightContainer">
-                                <table id="classCodeTable">
-                                    <tbody id="classCodeTableBody">
-                                        <!-- Class codes will be added here dynamically -->
-                                    </tbody>
-                                </table>
-                            </div>
+                            <table id="classCodeTable">
+                                <tbody id="classCodeTableBody">
+                                    <!-- Class codes will be added here dynamically -->
+                                </tbody>
+                            </table> 
                         </div>
                     </div>
 
-                    <div id="class-search-container">
-                        <h3 style="margin-top: 0px">Class Search</h3>
-                        <input type="text" id="classSearch" placeholder="XXXX - 000">
-                        <div id="search-results"></div>                    
-                    </div>
+                    <input type="text" id="classSearch" placeholder="XXXX - 000">
+                    <div id="disclaimer">Disclaimer: Users are responsible for verifying all information, including but not limited to registration restrictions, and ensuring accuracy. Reliance on Duck Planner for scheduling decisions is at the user's own risk.</div>
+                    <div id="search-results"></div>                    
                 </div>
+            </div>
 
-                <div class="sidebar" id="right-sidebar">
-                    <!-- Filter Selector Tool -->
+            <div class="sidebar" id="right-sidebar">
+                <!-- Filter Selector Tool -->
+                
+                <div id="preview-container">
+                    <h3 style="margin-top:0" id="filter-text">Filter Selector</h3>
+                    <div class="filter-selector">
+                        <label for="touch" id="filter"><span id="filter-span">Earliest End</span></label>               
+                        <input type="checkbox" id="touch"> 
+
+                        <ul class="slide" id="filter-ul">
+                            <li><a onclick="changeLabelText('Most Compact');">Most Compact</a></li> 
+                            <li><a onclick="changeLabelText('Latest Start');">Latest Start</a></li>
+                            <li><a onclick="changeLabelText('Earliest End');">Earliest End</a></li>
+                            <li style="border-radius: 0px 0px 5px 5px;"><a onclick="changeLabelText('Prioritize ASYNC');">Prioritize ASYNC</a></li>
+                        </ul>
+                    </div>
                     
-                    <div id="preview-container">
-                        <h3 style=" margin-left: 20px; margin-right: 20px;">Filter Selector</h3>
-                        <div class="filter-selector">
-                            <select id="filter">
-                                <option value="option1">Most Compact</option>
-                                <option value="option2">Earliest End</option>
-                                <option value="option3">Latest Start</option>
-                                <option value="option4">Earliest End – PRIO ASYNC</option>
-                            </select>
-                        </div>
-                        
-                        <div id="selected-schedule-view">
-                            <h3 style=" margin: 0px 20px">Selected Schedule</h3>
-                            <div id="selected-schedule-container"></div>
-                        </div>
-                        
-                        <div id="preview-table">
-                            <!-- Schedule Previews will be generated here -->
-                        </div>
+                    <div id="selected-schedule-view">
+                        <h3 style="margin:0">Selected Schedule</h3>
+                        <div id="selected-schedule-container"></div>
                     </div>
-
-                    <div id="crn-container">
-                        <div id="crn-table"></div>
-                        <button class="modern-button" id="Copy CRNs">Copy CRNs</button>
+                    
+                    <div id="preview-table">
+                        <!-- Schedule Previews will be generated here -->
                     </div>
                 </div>
 
+                <footer>
+                    <div id="page-button-container">
+                        <button class="modern-button page-btn" id="prev-page" onclick="loadPrevious()">
+                            <img src="./icons/page.png" alt="prev" id="icon-prev">
+                        </button>
+                        <div id="page-number"></div>
+                        <button class="modern-button page-btn" onclick="loadNext()" id="next-page">
+                            <img src="./icons/page.png" alt="next" id="icon-next">
+                        </button>
+                    </div>
+
+                </footer>
+            </div>
+
+            <div class="sidebar" id="calendar-sidebar">
+                <button class="modern-button mobile-button mobile" id="View-Map">Toggle Map</button>
                 <div class="matrix" id="matrixContainer">
-                    <button class="modern-button mobile-button mobile" id="Copy CRNs">Map View</button>
                     <table id="schedulerTable">
                         <colgroup id="columnGroup">
                         </colgroup>
                     </table>
-
-                    <div id='map'></div>
                 </div>
+                <div id='map'></div>
             </div>
-            <footer>
-                Made with ❤️ for the University of Oregon 2023
-            </footer>
         </div>
+        <footer>
+            <div id="footer-text">Made with ❤️ for the University of Oregon 2023</div>
+            <button class="footer-button" style="display:none" id="Footer-CRNs">Copy CRNs</button>
+        </footer>
+    </div>
 
-        <script src="scripts/coloris.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.1"></script>
+    <!-- Login Popup (initially hidden) -->
+    <div id="loginPopup" class="popup-container" style="display: none;">
+        <div class="login-popup">
+            <div id="popup-header">
+                <span class="close" id="closePopup">&times;</span>
+                <h2>Welcome Back</h2>
+            </div>
+            <form id="loginForm">
+                <input type="text" class="input" name="ID" placeholder="UO ID / 95 Number" required id="user-input" pattern="95\d{7}" title="ID must start with 95 followed by seven digits.">
+                <input type="password" placeholder="Password" name="Password" required id="pass-input">
+                <button type="submit">Login</button>
+            </form>
+            <p class="signup-prompt">Don't have an account? <button class="signup-button" id="signUp">Sign Up</button></p>
+        </div>
+    </div>
 
-        <script src="scripts/MobileMenuBar.js"></script>
-        <script src="scripts/MenuBar.js"></script>
+    <!-- Sign Up Popup (initially hidden) -->
+    <div id="signUpPopup" class="popup-container" style="display: none;">
+        <div class="login-popup">
+            <div id="popup-header">
+                <span class="close" id="closeSignupPopup">&times;</span>
+                <h2>User Sign Up</h2>
+            </div>
+            <form id="signUpForm">
+                <input type="text" class="input" name="firstName" placeholder="First Name" required id="first-name-input">
+                <input type="text" class="input" name="lastName" placeholder="Last Name" required id="last-name-input">
+                <input type="text" class="input" name="ID" placeholder="UO ID / 95 Number" required id="ID-input" pattern="95\d{7}" title="ID must start with 95 followed by seven digits.">
+                <input type="password" class="input" name="Password" placeholder="Password" required id="new-pass-input">
+                <input type="password" class="input" placeholder="Confirm Password" required id="confirm-pass-input">
+                <button type="submit" class="signup-button">Sign Up</button>
+            </form>
+        </div>
+    </div>
 
-        <script src="scripts/GenerateMatrix.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/fuse.js"></script>
-        <script src="scripts/AddClasses.js"></script>
-        <script src="scripts/Map.js"></script>
-        <script src="scripts/GeneratePreview.js"></script>
-        <script src="scripts/GenerateSchedules.js"></script>
-        <script src="scripts/ColorPicker.js"></script>
-        <script src="scripts/sortSchedules.js"></script>
-    </body>
+    <!-- Sourcing Scripts -->
+    <script src="scripts/coloris.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.1"></script>
+
+    <script src="scripts/Login.js"></script>
+    <script src="scripts/MobileMenuBar.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js"></script>
+    <script src="scripts/GenerateSchedules.js"></script>
+    <script src="scripts/AddClasses.js"></script>
+    <script src="scripts/GenerateMatrix.js"></script>
+    
+    <script src="scripts/Map.js"></script>
+    <script src="scripts/GeneratePreview.js"></script>
+    <script src="scripts/SavedSchedules.js"></script>
+    <script src="scripts/ColorPicker.js"></script>
+    <script src="scripts/sortSchedules.js"></script>
+    <script src="scripts/MenuBar.js"></script>
+</body>
 </html>

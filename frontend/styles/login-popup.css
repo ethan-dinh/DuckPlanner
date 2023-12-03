@@ -1,0 +1,119 @@
+/* Style for the popup */
+.popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+}
+
+.login-popup {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.25);
+}
+
+.login-popup .close {
+    float: right;
+    font-size: 28px;
+    cursor: pointer;
+    transform: translateY(-5px);
+}
+
+.login-popup h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+#user-input {
+    width: 100%;
+    text-transform: None;
+    margin-bottom: 15px;
+}
+
+#pass-input {
+    width: 100%; /* Adjust the width calculation based on your padding */
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    background-color: #e0e0e0;
+    box-sizing: border-box; /* Include padding and border in total width */
+    text-transform: none;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+#pass-input:focus {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Subtle shadow */
+    border: 1px solid #e0e0e0;
+    outline: none;
+}
+
+.login-popup {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+}
+
+.login-popup form > input {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.login-popup form > button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: #333;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Sign Up */
+.signup-prompt {
+    text-align: center;
+    font-size: 13px;
+}
+
+.signup-button {
+    background: none;
+    border: none;
+    color: #4facfe;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+#first-name-input, #last-name-input, #new-user-input, #ID-input, #new-pass-input, #confirm-pass-input {
+    width: 100%; /* Adjust the width calculation based on your padding */
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    background-color: #e0e0e0;
+    box-sizing: border-box; /* Include padding and border in total width */
+    text-transform: none;
+    font-size: 14px;
+    text-transform: none !important;
+    margin-top: 0px !important;
+}
+
+#first-name-input {
+    margin-top: 20px !important;
+}
+
+#first-name-input:focus, #last-name-input:focus, #new-user-input:focus, #ID-input:focus, #new-pass-input:focus, #confirm-pass-input:focus {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Subtle shadow */
+    border: 1px solid #e0e0e0;
+    outline: none;
+}

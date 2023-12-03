@@ -2,7 +2,7 @@
     display: none; /* Hide mobile elements initially */
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
     .mobile {
         display: block; /* Show mobile elements in small screens */
     }
@@ -11,7 +11,7 @@
         display: none;
     }
 
-    .matrix {
+    #calendar-sidebar {
         display: none;
     }
 
@@ -51,6 +51,12 @@
         border-right: none;
     }
 
+    #left-most-sidebar {
+        min-width: 350px !important;
+        max-width: 100%;
+        overflow-y: auto;
+    }
+
     .mobile-bar {
         display: flex !important;
         justify-content: center;
@@ -77,7 +83,11 @@
     }
 
     .credit-container{
-        margin-left: 20px;
+        margin-left: 25px;
+    }
+
+    #credits-mobile {
+        margin-right: 0px;
     }
 
     .mobile-button {
@@ -95,6 +105,10 @@
         display: block;
     }
     
+    #filter-text {
+        display: none;
+    }
+
     #schedulerTable td {
         font-size: 10px;
     }
@@ -108,8 +122,31 @@
         max-width: 30px;
     }
 
+    #schedulerTable th:first-child {
+        padding: 0;
+        padding-right: 5px;
+    }
+
     #schedulerTable th {
         font-size: 10px;
+    }
+
+    .mini-preview td {
+        height: 2px;
+    }
+
+    #right-sidebar {
+        min-width: 290px !important;
+        max-width: none;
+    }
+
+    #selected-schedule-container {
+        padding: 15px 15px 30px 15px;
+        display: none; 
+    }
+
+    #preview-table {
+        padding: 30px 15px 30px 15px;
     }
 }
 

@@ -1,0 +1,235 @@
+#left-most-sidebar {
+    overflow-y: auto;
+}
+
+#disclaimer, #instructions{
+    font-size: 13px;
+    color: rgba(140, 140, 140, 0.8);
+    margin: 10px 3px;
+}
+
+input[type="text"] {
+    width: 100%; /* Adjust the width calculation based on your padding */
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    background-color: #e0e0e0;
+    box-sizing: border-box; /* Include padding and border in total width */
+    text-transform: uppercase;
+    font-size: 14px;
+    margin-top: 8px;
+}
+
+input[type="text"]:focus {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Subtle shadow */
+    border: 1px solid #e0e0e0;
+    outline: none;
+}
+
+#class-search-container {
+    height: 100%;
+    display: flex; /* Make preview-container a flex container */
+    flex-direction: column;
+}
+
+#search-results {
+    font-size: 14px;
+    padding-bottom: 15px;
+    margin-top: 5px;
+}
+
+#classCodeTable {
+    width: 100%;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-spacing: 0 10px; 
+    padding-bottom: 10px;
+}
+
+#classCodeTableBody tr {
+    background-color: #383a36; /* Dynamic background color */
+    color: #fff; /* White text color */
+    margin-bottom: 10px; /* Space between rows */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Subtle shadow */
+    transition: transform 0.3s;
+    position: relative;
+}
+
+#classCodeTableBody td {
+    height: 50px;
+    position: relative;
+    text-align: left; /* Align text to the left */
+    vertical-align: middle; /* Keep text vertically centered */
+    padding: 10px 20px; /* Adjust padding as needed */
+}
+
+/* The left color bar */
+#classCodeTable tr {
+    position: relative; /* to anchor the ::before pseudo-element */
+}
+
+#classCodeTable td::before {
+    content: "";
+    display: block;
+    width: 10px; /* or whatever thickness you want for the bar */
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#classCodeTable td::before {
+    background-color: var(--random-color);
+}
+
+/* Results Table */
+.result-info {
+    display: flex;
+    position: relative;
+    align-items: center; /* Center items vertically */
+    gap: 20px;
+    justify-content: space-between; /* Space between text and icons */
+    background-color: #383a36; /* Dynamic background color */
+    padding: 10px;
+    margin-top: 10px;
+    transition: all 0.3s;
+}
+
+.result-info:hover {
+    background-color: #2ea008; /* Darker background color on hover */
+    transform: translateY(-5px); /* Move the element up by 2px on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), /* Lower shadow */
+                0 10px 20px rgba(0, 0, 0, 0.1); /* Further diffuse shadow */
+}
+
+/* Icons and text container */
+.icon.add {
+    position: absolute; /* Takes the icon out of the normal flow */
+    top: 10px; /* Aligns the top edge of the icon with the container */
+    right: 10px; /* Aligns the right edge of the icon with the container */
+    cursor: pointer; /* Changes the cursor to a pointer to indicate it's clickable */
+    width: 13px;
+    margin-right: 0;
+    opacity: 0.5; /* Make the icon 50% transparent */
+    transition: opacity 0.3s; /* Smooth transition for the opacity */
+}
+
+/* Style for the course title and description */
+.course-title {
+    font-weight: bold;
+    color: #fff;
+    margin-right: 10px; /* Space after the title */
+}
+
+.course-description {
+    margin-top: 3px;
+    color: #fff;
+    font-size: 0.8em; /* Smaller font size for the description */
+}
+
+.course-loc {
+    margin-top: 3px;
+    font-size: 0.8em;
+    color: #fff;
+    opacity: 0.7; 
+}
+
+/* Styles for the icons */
+.icons-container {
+    display: flex;
+    position: absolute;
+    top: 10px; /* Align it to the top of the parent container */
+    right: 8px; /* Align it to the right of the parent container */
+}
+
+.icon {
+    margin: 0 5px; /* Space between icons */
+}
+
+.icon.trash {
+    width: 18px; 
+    height: 18px; 
+    opacity: 0.5; /* Make the icon 50% transparent */
+    transition: opacity 0.3s; /* Smooth transition for the opacity */
+}
+
+.icon.arrow {
+    width: 13px; 
+    height: 13px; 
+    opacity: 0.5; 
+    transform: translateY(2px);
+    transition: opacity 0.3s; /* Smooth transition for the opacity */
+    transition: transform 0.3s ease-in-out
+}
+
+.icon.picker {
+    width: 17px; 
+    height: 17px; 
+    opacity: 0.5; /* Make the icon 50% transparent */
+    transition: opacity 0.3s; /* Smooth transition for the opacity */
+}
+
+.icon.pin {
+    display: flex;
+    position: absolute;
+    right: 10px; /* Align it to the right of the parent container */
+    width: 14px; 
+    height: 14px; 
+    opacity: 0.5; 
+    transform: translateY(2px);
+    transition: opacity 0.3s;
+}
+
+.color-picker {
+    opacity: 0;
+    position: absolute;
+    height: 1px;
+    z-index: -2; /* Put it behind other elements */
+}
+
+.icon:hover {
+    opacity: 1; /* Full opacity on hover */
+}
+
+.icon.flipped {
+    transform: scaleY(-1);
+}
+
+/* Styling for the more info section */
+.instructor-details {
+    transition: opacity 0.3s, height 0.3s ease-in-out;
+    height: 0; /* Start with a height of 0 when not visible */
+    overflow: hidden; /* Keeps content from showing when the element's height is 0 */
+    opacity: 0; /* Start with a transparent when not visible */
+}
+
+.instructor-details.visible {
+    opacity: 1;
+}
+
+.section-info {
+    margin-top: 3px;
+    font-size: 0.9em; /* Smaller font size for the description */
+}
+
+.instructor-info { 
+    padding-top: 20px;
+    font-size: 0.9em;
+    border-bottom: 2px solid #ccc;
+}
+
+.instructor-info h3{ 
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+
+.course-details { 
+    font-size: 0.8em;
+    opacity: 0.7;
+    margin-bottom: 15px;
+}
+
+.hidden {
+    display: none !important;
+}

@@ -1,17 +1,33 @@
-#right-sidebar {
-    flex: 0.8;
-    padding: 0;
-}
-
 .sidebar {
-    flex: 0.9;
     display: flex;
     flex-direction: column;
-    padding-top: 0px;
-    padding-bottom: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 15px; 
+    padding-bottom: 0;
     border-right: 1px solid #e0e0e0;
     box-sizing: border-box;
     overflow: auto;
+}
+
+#left-most-sidebar {
+    min-width: 350px !important;
+    max-width: 350px;
+    overflow-y: auto;
+}
+
+#right-sidebar {
+    min-width: 290px !important;
+    max-width: 290px;
+    height: 100%;
+    overflow-y: hidden;
+}
+
+#calendar-sidebar {
+    padding: 0;
+    height: 100%;
+    flex: 3.5;
+    overflow: hidden;
+}
+
+#saved-schedule-container {
+    max-width: 290px;
 }

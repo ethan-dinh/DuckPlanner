@@ -1,0 +1,215 @@
+.menu-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 25px;
+    padding-bottom: 11px;
+    border-bottom: 1px solid #ccc;
+    color: black;
+    max-height: 61.73px;
+}
+
+.menu-bar h1 {
+    margin: 0; 
+    font-size: 1.4em;
+}
+
+.menu-bar-center {
+    display: flex;
+    flex-grow: 1; 
+    margin: 0;
+}
+
+.menu-bar-center a {
+    color: black;
+    border-bottom: 2px solid transparent;
+    text-decoration: none;
+    margin: 0 5px; 
+    padding: 10px 15px;
+    transition: all 0.3s ease; 
+}
+
+.menu-bar-center a.active {
+    border-bottom: 2px solid #000000;
+}
+
+.menu-bar-center a:hover {
+    border-bottom-color: #000000;
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+.credit-container {
+    margin-left: 40px;
+    margin-right: 30px;
+}
+
+#logo {
+    width: 40px;
+    height: 40px;
+}  
+
+/* CRN SELECTOR STYLES */
+#crn-table {
+    display: none;
+}
+
+#icon-copy {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.5s; /* Smooth transition for the icon */
+}
+
+.button-text {
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 0;
+    transition: width 0.2s ease-in-out;
+}
+
+.modern-button {
+    border: none;
+    background-color: #ccc;
+    color: white;
+    font-weight: 500;
+    padding: 10px 15px;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    transition: box-shadow 225ms, background-color 225ms;
+    overflow: hidden;
+}
+
+#Copy-CRNs {
+    padding: 10px 15px;
+}
+
+.modern-button:hover .button-text {
+    width: 70px; /* Allow the text to expand */
+    transition: width 0.2s ease-in-out;
+    padding-right: 10px;
+}
+
+.modern-button:hover #icon-copy {
+    /* shrink the icon */
+    opacity: 0;
+    width: 10px;
+    transition: opacity 0.1s; /* Smooth transition for the icon */
+}
+
+.modern-button:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.35);
+    background-color: #2ea008;
+}
+
+.modern-button:active {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.35);
+    background-color: #2ea008;
+    transform: translateY(2px);
+}
+
+#Footer-CRNs {
+    width: 100%;
+    background-color: #232422; 
+    color: #fff; 
+    border: none; 
+    height: 100%;
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px;
+}
+
+#Footer-CRNs:hover {
+    background-color: #2ea008; /* Background color on hover */
+}
+
+/* Login Button */
+.modern-button:hover #icon-login {
+    /* shrink the icon */
+    opacity: 0;
+    width: 10px;
+    transition: opacity 0.1s; /* Smooth transition for the icon */
+}
+
+#icon-login {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.5s; /* Smooth transition for the icon */
+}
+
+#login {
+    margin-left: 10px;
+    padding: 10px 15px;
+}
+
+/* Save Button */
+#icon-save {
+    width: 25px;
+    height: 25px;
+}
+
+#saveSchedule {
+    margin-left: 10px;
+    padding: 7.5px 12.5px;
+}
+
+#saveSchedule:hover #icon-save {
+    opacity: 0;
+    width: 10px;
+}
+
+#saveSchedule:hover .button-text {
+    width: 80px; /* Allow the text to expand */
+    transition: width 0.2s ease-in-out;
+    padding-right: 18px;
+}
+
+/* Logout Button */
+#icon-logout {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.5s; /* Smooth transition for the icon */
+}
+
+#logout {
+    margin-left: 10px;
+    padding: 12px 17px;
+}
+
+#logout:hover {
+    background-color: #ff0000;
+    cursor: pointer;
+}
+
+#logout:hover #icon-logout {
+    opacity: 0;
+    width: 10px;
+}
+
+/* Profile */
+#profile {
+    border: none;
+    background-color: #ccc;
+    color: white;
+    font-weight: 500;
+    padding: 10px 15px;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    transition: box-shadow 225ms, background-color 225ms;
+    overflow: hidden;
+    cursor: auto;
+    margin-left: 10px;
+}
+
+#userInfo {
+    margin: 0;
+    color: #232422;
+    font-weight: 600;
+    font-size: 1em;
+}

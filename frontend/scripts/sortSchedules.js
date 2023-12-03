@@ -28,10 +28,10 @@ function calculateAverageEndTime(matrix, async = false) {
 
     for (let col = 0; col < matrix[0].length; col++) {
         for (let row = 0; row < matrix.length; row++) {
-            if (async && (matrix[row][col] !== null && matrix[row][col] === "ASYNC"))
+            if (async && (matrix[row][col] !== null && matrix[row][col].includes("ASYNC")))
                 return 0;
             
-            if (matrix[row][col] !== null && matrix[row][col] !== "ASYNC") {
+            else if (matrix[row][col] !== null) {
                 endTimeSum += row;
                 daysWithClasses++;
                 break; // Found the last class for the day
@@ -78,18 +78,18 @@ function sortMatricesByASYNC() {
 }
 
 function applyFilter() {
-    const filter = document.getElementById('filter').value;
-    switch (filter) {
-        case 'option1':
+    const label = labelSpan = document.querySelector('#filter span').textContent;
+    switch (label) {
+        case 'Most Compact':
             sortMatricesByCompactness();
             break;
-        case 'option2':
+        case 'Earliest End':
             sortMatricesByEarliestEnd()
             break;
-        case 'option3':
+        case 'Latest Start':
             sortMatricesByLatestStart()
             break;
-        case 'option4':
+        case 'Prioritize ASYNC':
             sortMatricesByASYNC();
             break;
     } 
@@ -98,5 +98,15 @@ function applyFilter() {
     generateCompressedPreview();    
 }
 
-// Set up the event listener for the select element
-document.getElementById('filter').addEventListener('change', applyFilter);
+
+// Define the function that changes the label text
+function changeLabelText(text) {
+    var labelSpan = document.querySelector('#filter span');
+    labelSpan.textContent = text;
+    applyFilter();
+
+    // click the checkbox to close the dropdown
+    var checkbox = document.getElementById('touch');
+    checkbox.checked = false;
+  }
+  

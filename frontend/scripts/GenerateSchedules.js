@@ -57,8 +57,10 @@ function generateSchedule() {
             displayErrorMessage("No schedules were found! Please select a different combination of classes.");
             noSchedules = true;
 
+            const touch = document.getElementById("touch");
             const filter = document.getElementById("filter");
-            filter.disabled = true;
+            touch.disabled = true;
+            filter.style.opacity = 0.5;
         } else {
             // If it's not empty, proceed as normal
             scheduleMatrices = []
@@ -69,8 +71,10 @@ function generateSchedule() {
             applyFilter();
             renderMatrix(scheduleMatrices[0]);
 
+            const touch = document.getElementById("touch");
             const filter = document.getElementById("filter");
-            filter.disabled = false;
+            touch.disabled = false;
+            filter.style.opacity = 1;
         } 
         selectedContainer.style.display = 'block'; 
         hideLoadingBar();

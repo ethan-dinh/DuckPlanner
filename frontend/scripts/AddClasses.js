@@ -4,12 +4,17 @@ let colorMapping = {}
 let lastClickedPickerId = null;
 let color_index = 0;
 let numCredits = 0;
+let crn_list = [];
+let crn_dict = null;
+let finishedLoading = false;
 
 const colors = ["#E63946", "#F4A261", "#2A9D8F", "#264653", "#2B2D42", "#EF476F", "#073B4C", "#006D77", "#3A0CA3", "#D62828"];
 const addedClassCodes = new Set();
 
+const touch = document.getElementById("touch");
 const filter = document.getElementById("filter");
-filter.disabled = true;
+touch.disabled = true;
+filter.style.opacity = 0.5;
 
 function updateCredits() {
     const creditsDiv = document.getElementById("credits");
@@ -20,10 +25,14 @@ function updateCredits() {
 
 function group(courseList) {
     const courseDict = {};
+    const crnDict = {};
     courseList.forEach(course => {
         let tupleKey = `${course.CourseName},${course.Description}`;
         const crn = course.crn;
         const instructor = course.Instructor;
+        
+        // Populate a CRN dictionary for the saved schedules
+        crnDict[crn] = course;
 
         // Initialize the dictionary for the tupleKey if it doesn't exist
         if (!courseDict[tupleKey]) {
@@ -42,6 +51,7 @@ function group(courseList) {
         }
         courseDict[tupleKey].byInstructor[instructor].push(course);
     });
+    crn_dict = crnDict;
     return courseDict;
 }
 
@@ -59,16 +69,14 @@ function fetchData() {
         })
         .then(responseData => {
             classData = group(responseData);
+            finishedLoading = true;
+            hideLoadingBar();
             return responseData; // Return the fetched data
         })
         .catch(error => {
             console.error("Error:", error);
             throw error;
-        })
-        .finally(() => {
-            // Hide the loading bar when the request is complete (whether successful or not)
-            hideLoadingBar();
-        });
+        }) 
 }
 
 function showLoadingBar() {
@@ -109,7 +117,7 @@ function updateSearchResults(query) {
     const searchResults = document.getElementById("search-results");
     let results = fuse.search(query);
 
-    let maxIndex = Math.min(results.length, 200);
+    let maxIndex = Math.min(results.length, 50);
     results = results.slice(0, maxIndex); 
 
     // Create a Set to track unique course names
@@ -151,9 +159,6 @@ function updateSearchResults(query) {
 
                 // Check if the class code is not already added
                 listItem.addEventListener("click", function() {
-                    const filter = document.getElementById("filter");
-                    filter.disabled = false;
-
                     updateResults(result.item.CourseName, result.item.Description, result.item.Location, result.item.Credits);
                     listItem.remove(); // Remove the clicked list item
 
@@ -184,6 +189,7 @@ function toggleInstructorDetails(event) {
     } else {
         // Remove the hidden state
         instructorDetails.classList.add('visible');
+        instructorDetails.classList.remove('hidden');
         // Set height to the scrollHeight, which is the full content height
         instructorDetails.style.height = `${instructorDetails.scrollHeight}px`;
         // Reset the height after the transition, for a responsive design
@@ -233,7 +239,7 @@ function createInstructorDetails(cell, tupleKey, groupedCourses) {
             } const timeData = `${days} ${time}`;
 
             detailsHTML += `
-                <img src="icons/pin.png" alt="Pin" class="icon pin"/>
+                <img src="icons/pin.png" alt="Pin" class="icon pin hidden"/>
                 <div class="section-info">
                     Section ${i + 1} ${location}
                 </div>
@@ -248,12 +254,23 @@ function createInstructorDetails(cell, tupleKey, groupedCourses) {
 }
 
 function updateProposedSchedules(classNameToRemove, classDescriptionToRemove) {
-    for (let i = 0; i < proposedSchedules.length; i++) {
-        // Filter out the class entries that match the class name to remove
-        proposedSchedules[i] = proposedSchedules[i].filter(
-            ((entry => entry[3] !== classNameToRemove) && (entry => entry[6] !== classDescriptionToRemove))
+    const uniqueSchedules = new Map();
+
+    proposedSchedules.forEach(schedule => {
+        // Filter out the class entries that match the criteria to remove
+        const filteredSchedule = schedule.filter(entry => 
+            entry[3] !== classNameToRemove && entry[6] !== classDescriptionToRemove
         );
-    };
+
+        // Convert the filtered schedule into a string to use as a unique Map key
+        const scheduleString = JSON.stringify(filteredSchedule);
+
+        // Add the filtered, stringified schedule to the Map to ensure uniqueness
+        uniqueSchedules.set(scheduleString, filteredSchedule);
+    });
+
+    // Convert the unique Map values back into an array
+    proposedSchedules = Array.from(uniqueSchedules.values());
 }
 
 function updateResults(name, desc, location, credits) {
@@ -314,11 +331,6 @@ function updateResults(name, desc, location, credits) {
         const trashIcon = cell.querySelector('.icon.trash');
         trashIcon.addEventListener('click', () => {
             if (!isRunning) {            
-                // remove the class from the locations
-                locations = locations.filter((loc) => {
-                    return loc[0] !== location.split(" ")[1];
-                }); updateMap();
-
                 numCredits -= credits;
                 updateCredits();
 
@@ -327,8 +339,13 @@ function updateResults(name, desc, location, credits) {
                     addedClassCodes.delete(tupleKey);
 
                     if (addedClassCodes.size === 0) {
+                        // Remove all markers
+                        locations = [];
+
+                        const touch = document.getElementById("touch");
                         const filter = document.getElementById("filter");
-                        filter.disabled = true;
+                        touch.disabled = true;
+                        filter.style.opacity = 0.5;
 
                         const previewTable = document.getElementById("preview-table");
                         const selectedContainer = document.getElementById('selected-schedule-container');
@@ -342,6 +359,7 @@ function updateResults(name, desc, location, credits) {
 
                         generateMatrix();
                         updateCRNTable(""); // Clear the CRN table
+                        updateMap();
                 
                         selectedMatrix = null;
                         newRow.remove();
@@ -349,11 +367,10 @@ function updateResults(name, desc, location, credits) {
                     }
 
                     updateProposedSchedules(tupleKey.split(',')[0], tupleKey.split(',')[1])
+                    scheduleMatrices = [];
                     scheduleMatrices = convertToScheduleMatrices(proposedSchedules);
+                    
                     currentScheduleIndex = 0; // Reset index to the first schedule
-
-                    const selectedContainer = document.getElementById('selected-schedule-container');
-                    selectedContainer.innerHTML = "";
 
                     generateCompressedPreview();
                     if (noSchedules) {
@@ -421,5 +438,11 @@ function deleteTupleFromSet(addedClassCodes, course_name, course_desc) {
 const classSearchInput = document.getElementById("classSearch");
 classSearchInput.addEventListener("input", (event) => {
     const query = event.target.value;
+    const disclaimer = document.getElementById("disclaimer");
+    if (query === "") {
+        disclaimer.style.display = "block";
+    } else {
+        disclaimer.style.display = "none";
+    }
     updateSearchResults(query);
 });

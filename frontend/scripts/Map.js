@@ -48,12 +48,22 @@ function updateMap() {
             let lat = loc["latitude"];
             if (processed[locations[i][0]]) {
                 lat += 0.00005;
-            } let long = loc["longitude"] - 0.00005;
+            } let long = loc["longitude"];
 
-            markers.push(new mapboxgl.Marker({
-                color: `${colorMapping[locations[i][1]]}`
-            })  .setLngLat([lat, long])
-                .addTo(map));
+            const name = locations[i][1].split(',')[0];
+            const desc = locations[i][1].split(',')[1];
+            const popup = new mapboxgl.Popup({ offset: [0, -35] }).setHTML(
+                `<h3 style="margin: 0px">${name}</h3>
+                <p style="margin: 0px">${desc}</p>`
+            );
+            
+            const marker = new mapboxgl.Marker({ color: `${colorMapping[locations[i][1]]}` })
+                .setLngLat([lat, long])
+                .setPopup(popup); // Attach the popup to the marker
+            
+            marker.addTo(map);
+            markers.push(marker);
+
         } processed[locations[i][0]] = true;
     }
 }

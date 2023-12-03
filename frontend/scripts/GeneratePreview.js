@@ -1,10 +1,7 @@
 let selectedMatrix = null;
-let crns = new Set();
 
 function updateCRNTable(crns) {
-    const crnDiv = document.getElementById("crn-table");
-    const crnList = [...crns].join(', ');  
-    crnDiv.innerHTML = `<h3>${crnList}</h3>`;
+    crn_list = [...crns];  
 }
 
 function createPreviewMatrix(container, matrix, globalStartRow = 5, globalEndRow = 78) {
@@ -17,9 +14,8 @@ function createPreviewMatrix(container, matrix, globalStartRow = 5, globalEndRow
         (matrix[rowIndex] || []).forEach((cellContent, _) => {
             const td = tr.insertCell();
             if (cellContent) {
-                let dataArr = cellContent.split(',');
-                const name = dataArr[0];
-                const desc = dataArr[3].trim();
+                const name = cellContent[0];
+                const desc = cellContent[3];
                 const colorKey = `${name},${desc}`;
                 td.style.backgroundColor = colorMapping[colorKey] || '#e0e0e0';
             }
@@ -36,62 +32,18 @@ function createPreviewMatrix(container, matrix, globalStartRow = 5, globalEndRow
         renderMatrix(matrix);
     });
 
-    // Add the event listener to handle click for the preview
-    scheduleDiv.addEventListener('click', () => {
-        // Define the containers
-        const selectedContainer = document.getElementById('selected-schedule-container');
-
-        // Check if the selectedContainer already has a child
-        console.log(selectedContainer.firstChild)
-        if (selectedContainer.firstChild) {
-            container.appendChild(selectedContainer.firstChild);
-        }
-
-        // Move the selected schedule to the selected-schedule-container
-        selectedContainer.appendChild(scheduleDiv);
-
-        document.querySelectorAll('.schedule-container.selected').forEach(el => {
-            el.classList.remove('selected');
-        });
-
-        scheduleDiv.classList.add('selected');
-        selectedMatrix = matrix;
-
-        // Update the CRN table and Location Table
-        crns = new Set()
-        locations = [];
-        for (let i = 0; i < selectedMatrix.length; i++) {
-            for (let j = 0; j < selectedMatrix[i].length; j++) {
-                const cellContent = selectedMatrix[i][j];
-                if (cellContent) {
-                    let dataArr = cellContent.split(',');
-                    if (dataArr[0] === "ASYNC") {
-                        for (let k = 1; k < dataArr.length; k++)
-                            crns.add(dataArr[k].trim());
-                    } else {
-                        const tupleKey = `${dataArr[0]},${dataArr[3].trim()}`;
-                        if (!crns.has(dataArr[2].trim())) {
-                            crns.add(dataArr[2].trim());
-                            const location = classData[tupleKey].byCRN[dataArr[2].trim()][0].Location.split(' ')[1];
-                            locations.push([location, tupleKey]);
-                        }
-                    }
-                }
-            }
-        } 
-
-        updateCRNTable(crns);
-        updateMap();
-    });
-
     return scheduleDiv;
 }
 
+const loadStep = 20; // Number of matrices to load at a time
 function generateCompressedPreview() {
     const container = document.getElementById("preview-table");
     const selectedView = document.getElementById("selected-schedule-view");
-
+    const selectedContainer = document.getElementById('selected-schedule-container');
+    
     selectedView.style.display = "block";
+    selectedContainer.innerHTML = "";
+    selectedMatrix = null;
     container.innerHTML = "";
 
     // Check if there are no entries at all
@@ -99,64 +51,129 @@ function generateCompressedPreview() {
         return;
     }
 
-    // Lazy Loading
     let loadIndex = 0; // Start index for loading
-    const loadStep = 20; // Number of matrices to load at a time
+    let currentStep = 0; // To keep track of current step for back button
+    let totalSteps = Math.ceil(scheduleMatrices.length / loadStep);
 
     // Function to load a portion of matrices
-    function loadPortion(initialize) {
+    function loadPortion() {
+        clearContainer(container);
+        container.scrollTop = 0; // Scrolls to the top of the container.
         for (let i = loadIndex; i < Math.min(loadIndex + loadStep, scheduleMatrices.length); i++) {
             const matrix = scheduleMatrices[i];
-            scheduleDiv = createPreviewMatrix(container, matrix);
-            container.appendChild(scheduleDiv);
-            if (i === loadIndex && initialize) { 
-                scheduleDiv.click(); // Select the first schedule by default
+            const scheduleDiv = createPreviewMatrix(container, matrix);
+
+            const previewDiv = document.createElement("div");
+            previewDiv.className = "preview";
+
+            // Create a div for the unique identifier
+            const identifierDiv = document.createElement("div");
+            identifierDiv.id = `identifierDiv`;
+            identifierDiv.className = "identifier";
+            identifierDiv.textContent = i + 1;
+
+            previewDiv.appendChild(identifierDiv);
+            previewDiv.appendChild(scheduleDiv);
+            container.appendChild(previewDiv);
+
+            // Add the event listener to handle click for the preview
+            previewDiv.addEventListener('click', () => {
+                // Define the containers
+                const selectedContainer = document.getElementById('selected-schedule-container');
+
+                // Check if the selectedContainer already has a child
+                if (selectedContainer.firstChild) {
+                    container.appendChild(selectedContainer.firstChild);
+                }
+
+                // Move the selected schedule to the selected-schedule-container
+                selectedContainer.appendChild(previewDiv);
+
+                document.querySelectorAll('div.selected').forEach(el => {
+                    el.classList.remove('selected');
+                });
+
+                identifierDiv.classList.add('selected');
+                selectedMatrix = matrix;
+
+                // Update the CRN table and Location Table
+                crns = new Set()
+                locations = [];
+                for (let i = 0; i < selectedMatrix.length; i++) {
+                    for (let j = 0; j < selectedMatrix[i].length; j++) {
+                        const cellContent = selectedMatrix[i][j];
+                        if (cellContent) {
+                            let dataArr = cellContent;
+                            if (dataArr.includes("ASYNC")) {
+                                dataArr = cellContent.split(',');
+                                for (let k = 1; k < dataArr.length; k++)
+                                    crns.add(dataArr[k].trim());
+                            } else {
+                                const tupleKey = `${dataArr[0]},${dataArr[3]}`;
+                                if (!crns.has(dataArr[5])) {
+                                    crns.add(dataArr[5]);
+                                    const location = dataArr[2].split(' ')[1];
+                                    locations.push([location, tupleKey]);
+                                }
+                            }
+                        }
+                    }
+                } 
+
+                updateCRNTable(crns);
+                updateMap();
+                renderMatrix(selectedMatrix);
+            });
+
+            if (i === loadIndex && !selectedMatrix) { 
+                previewDiv.click(); // Select the first schedule by default
             }
-        } loadIndex += loadStep; // Update the load index
+        }
+        updateButtonStates(); // Update the states of back and forward buttons
+    }
+
+    // Function to clear the container
+    function clearContainer(container) {
+        container.innerHTML = "";
+    }
+
+    // Function to update the state of the buttons
+    function updateButtonStates() {
+        document.getElementById('prev-page').disabled = currentStep <= 0;
+        document.getElementById('next-page').disabled = loadIndex + 20 >= scheduleMatrices.length;
+
+        // Update the text for the page number
+        document.getElementById('page-number').innerText = `${currentStep + 1}/${totalSteps}`;
+    }
+
+    // Function to load the next portion of matrices
+    window.loadNext = function() {
+        if (loadIndex < scheduleMatrices.length) {
+            loadIndex += loadStep;
+            currentStep++;
+            loadPortion();
+        }
+    }
+
+    // Function to load the previous portion of matrices
+    window.loadPrevious = function() {
+        if (currentStep > 0) {
+            loadIndex -= loadStep;
+            currentStep--;
+            loadPortion();
+        }
     }
 
     // Initial load
-    loadPortion(true);
-
-    // Scroll event listener for lazy loading
-    container.addEventListener('scroll', () => {
-        if (container.scrollHeight - container.scrollTop <= container.clientHeight * 1.5) {
-            loadPortion(false);
-        }
-    });
+    loadPortion();
 
     // Add event listener for mouseleave on the main container
     container.addEventListener('mouseleave', () => {
-        if (selectedMatrix) {
+        if (selectedMatrix && !ifMobile) {
             renderMatrix(selectedMatrix);
         }
     });
+
+    // Update the button states initially
+    updateButtonStates();
 }
-
-document.getElementById("Copy CRNs").addEventListener("click", function() {
-    // Get the text content from the h3 inside the crn-table
-    const textToCopy = document.querySelector("#crn-table h3").textContent;
-
-    // Use the Clipboard API to copy the text
-    navigator.clipboard.writeText(textToCopy).then(function() {
-        console.log('Text successfully copied to clipboard');
-
-        // Get button's position and dimensions
-        const button = document.getElementById("Copy CRNs");
-        const rect = button.getBoundingClientRect();
-
-        // Calculate origin based on button's position
-        const originX = (rect.left + rect.right) / 2 / window.innerWidth;
-        const originY = (rect.top + rect.bottom) / 2 / window.innerHeight;
-
-        // Trigger the confetti from the button's position
-        confetti({
-            particleCount: 300,
-            spread: 130,
-            origin: { x: originX, y: originY }
-        });
-
-    }).catch(function(err) {
-        console.error('Unable to copy text to clipboard', err);
-    });
-});

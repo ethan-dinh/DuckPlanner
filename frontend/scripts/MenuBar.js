@@ -1,7 +1,5 @@
 let ifMobile = false;
-
-// Set the default active link
-updateActiveLink('matrixViewButton');
+let tmp_CRN_copy = null;
 
 // Function to update the height
 function setVH() {
@@ -21,14 +19,23 @@ function debouncedSetVH() {
 // Update the variable when the window is resized
 window.addEventListener('resize', debouncedSetVH);
 
-// You will also want to update the showMatrixView and showMapView functions to call updateActiveLink
 function showMatrixView() {
     var mapContainer = document.getElementById('map');
     var matrixTable = document.getElementById('schedulerTable');
     var matrixContainer = document.getElementById('matrixContainer');
+    var calendarSidebar = document.getElementById('calendar-sidebar');
     var rightSide = document.getElementById('right-sidebar');
     var coursesPanel = document.getElementById('left-most-sidebar');
+    var footerText = document.getElementById('footer-text');
+    var footerButton = document.getElementById('Footer-CRNs');
+    var savedContainer = document.getElementById('saved-schedule-container');
+    var classSearch = document.getElementById('left-most-sidebar');
 
+    classSearch.style.display = 'flex';
+    savedContainer.style.display = 'none';
+    footerButton.style.display = 'none';
+    footerText.style.display = 'block';
+    calendarSidebar.style.display = 'flex';
     coursesPanel.style.display = 'flex';
     coursesPanel.style.flex = '0.9';
     rightSide.style.display = 'flex';
@@ -37,35 +44,58 @@ function showMatrixView() {
     matrixTable.style.display = 'table'; 
     matrixContainer.style.display = 'block';
 
+    if (selectedMatrix !== null && !ifMobile) {
+        renderMatrix(selectedMatrix);
+    } else {
+        generateMatrix();
+    }
+    
+    crn_list = tmp_CRN_copy;
     updateActiveLink('matrixViewButton');
+}
+
+function showSavedView() {
+    var mapContainer = document.getElementById('map');
+    var matrixTable = document.getElementById('schedulerTable');
+    var rightSide = document.getElementById('right-sidebar');
+    var savedContainer = document.getElementById('saved-schedule-container');
+    var classSearch = document.getElementById('left-most-sidebar');
+
+    classSearch.style.display = 'none';
+    savedContainer.style.display = 'flex';
+    savedContainer.style.flex = '0.9';
+    rightSide.style.display = 'none';
+    matrixTable.style.display = 'table';
+    mapContainer.style.display = 'none'; 
+
+    tmp_CRN_copy = crn_list;
+
+    updateActiveLink('savedSchedulesButton');
+    generateMatrix();
+    retrieveSavedSchedules();
 }
 
 function showMapView() {
     var mapContainer = document.getElementById('map');
     var matrixTable = document.getElementById('schedulerTable');
     var rightSide = document.getElementById('right-sidebar');
-    
+    var savedContainer = document.getElementById('saved-schedule-container');
+    var classSearch = document.getElementById('left-most-sidebar');
+
+    classSearch.style.display = 'flex';
+    savedContainer.style.display = 'none';
     rightSide.style.display = 'none';
-
+    matrixTable.style.display = 'none';
+    mapContainer.style.display = 'block'; 
     updateMap();
-
-    // Check if the map container exists
-    if (mapContainer) {
-        mapContainer.style.display = 'block'; // Show the map
-        map.resize(); // This is the correct usage
-    }
-    
-    // Check if the matrix container exists
-    if (matrixTable) {
-        matrixTable.style.display = 'none'; // Hide the matrix
-    }
-
+    map.resize(); 
     updateActiveLink('mapViewButton');
 }
 
+
 // if screen is resized to be larger than 768px, show the matrix view
 function adjustFullSize() {
-    if (window.innerWidth > 768) {
+    if (window.innerWidth > 1200) {
         showMatrixView();
         ifMobile = false;
     } else {
@@ -74,11 +104,5 @@ function adjustFullSize() {
     }
 }
 
-let adjustTimeout;
-adjustFullSize();
-function debouncedSetFullSize() {
-  clearTimeout(adjustTimeout);
-  adjustTimeout = setTimeout(adjustFullSize, 200);
-}
-
-window.addEventListener('resize', debouncedSetFullSize);
+adjustFullSize()
+window.addEventListener('resize', adjustFullSize);
